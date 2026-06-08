@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Atlantis Control</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/admin/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-logo">
+                ATLANTIS
+                <small>CONTROL</small>
+            </div>
+            <ul class="admin-nav">
+                <li><a class="active" onclick="showSection('dashboard', this)">◆ Dashboard</a></li>
+                <li><a onclick="showSection('articles', this)">📝 All Articles</a></li>
+                <li><a onclick="showSection('new', this)">✦ New Article</a></li>
+                <li><a href="/" target="_blank">🌐 View Site</a></li>
+                <li><a class="logout" onclick="logout()">⏻ Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <section id="sec-dashboard">
+                <div class="admin-header">
+                    <h2>Editorial <span class="accent">Overview</span></h2>
+                    <button class="btn" onclick="showSection('new', null)">✦ New Article</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Articles</div>
+                        <div class="stat-value" id="statTotal">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Published</div>
+                        <div class="stat-value" id="statPublished">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Drafts</div>
+                        <div class="stat-value" id="statDrafts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Featured</div>
+                        <div class="stat-value" id="statFeatured">0</div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Recent Articles</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="showSection('articles', null)">View All</button>
+                    </div>
+                    <table class="articles-table">
+                        <thead>
+                            <tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="recentBody"><tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="sec-articles" style="display:none;">
+                <div class="admin-header">
+                    <h2>All <span class="accent">Articles</span></h2>
+                    <button class="btn" onclick="showSection('new', null)">✦ New Article</button>
+                </div>
+                <div class="admin-card">
+                    <table class="articles-table">
+                        <thead>
+                            <tr><th>Title</th><th>Category</th><th>Author</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="allBody"><tr><td colspan="6" style="text-align:center;padding:40px;">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="sec-new" style="display:none;">
+                <div class="admin-header">
+                    <h2 id="formTitle">New <span class="accent">Article</span></h2>
+                    <button class="btn btn-secondary btn-sm" onclick="showSection('articles', null)">← Back</button>
+                </div>
+
+                <div class="form-container">
+                    <form id="articleForm" onsubmit="saveArticle(event)">
+                        <input type="hidden" id="articleId">
+
+                        <div class="form-group">
+                            <label>Title *</label>
+                            <input type="text" id="title" placeholder="e.g. The Hidden Tactics Insurance Companies Use" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select id="category" required>
+                                    <option value="">Select Category</option>
+                                    <option>Car Accidents</option>
+                                    <option>Insurance Claims</option>
+                                    <option>Personal Injury</option>
+                                    <option>Workers Compensation</option>
+                                    <option>Medical Malpractice</option>
+                                    <option>Truck Accidents</option>
+                                    <option>Slip and Fall</option>
+                                    <option>Wrongful Death</option>
+                                    <option>Insurance Denied</option>
+                                    <option>Legal Guides</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Author</label>
+                                <input type="text" id="author" value="Atlantis Editorial">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Excerpt</label>
+                            <input type="text" id="excerpt" placeholder="Brief description (auto-generated if empty)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <input type="file" id="image" accept="image/*" onchange="previewImage(this)">
+                            <div class="image-preview" id="imagePreview"></div>
+                            <small>Image will be uploaded to your GitHub repo</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Content (Markdown) *</label>
+                            <textarea id="content" required placeholder="## Heading&#10;&#10;Write your article in Markdown.&#10;&#10;**Bold** and *italic*&#10;&#10;- List item 1&#10;- List item 2&#10;&#10;> Important quote"></textarea>
+                            <small>Markdown supported: ## headings, **bold**, *italic*, - lists, > quotes</small>
+                        </div>
+
+                        <h3 class="section-divider">SEO Configuration</h3>
+
+                        <div class="form-group">
+                            <label>Meta Title</label>
+                            <input type="text" id="metaTitle" placeholder="50-60 characters">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Meta Description</label>
+                            <input type="text" id="metaDescription" placeholder="150-160 characters">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="status">
+                                    <option value="draft">📝 Draft</option>
+                                    <option value="published">✅ Published</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="featured">
+                                    <label for="featured">★ FEATURE ON HOMEPAGE</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn" id="submitBtn">📤 Publish Article</button>
+                            <button type="button" class="btn btn-secondary" onclick="showSection('articles', null)">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <h3>Delete Article?</h3>
+            <p>This action cannot be undone.</p>
+            <div class="btn-group">
+                <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p id="loadingText">Saving to GitHub...</p>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const github = JSON.parse(localStorage.getItem('atlantis_github') || '{}');
+        if (!github.token) window.location.href = '/admin/';
+
+        const REPO_API = `https://api.github.com/repos/${github.username}/${github.repo}`;
+        const HEADERS = {
+            'Authorization': `Bearer ${github.token}`,
+            'Accept': 'application/vnd.github.v3+json'
+        };
+
+        let allArticles = [];
+        let articlesFileSha = null;
+        let deleteTarget = null;
+
+        function showLoading(text = 'Saving to GitHub...') {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 4000);
+        }
+        function slugify(text) {
+            return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+        }
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        }
+        async function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function getArticlesFile() {
+            try {
+                const res = await fetch(`${REPO_API}/contents/data/articles.json`, { headers: HEADERS });
+                if (!res.ok) throw new Error('Cannot fetch articles');
+                const data = await res.json();
+                articlesFileSha = data.sha;
+                const content = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+                return JSON.parse(content);
+            } catch (err) {
+                console.error(err);
+                return [];
+            }
+        }
+
+        async function saveArticlesFile(articles) {
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify(articles, null, 2))));
+            const body = {
+                message: `Update articles - ${new Date().toISOString()}`,
+                content: content,
+                sha: articlesFileSha
+            };
+            const res = await fetch(`${REPO_API}/contents/data/articles.json`, {
+                method: 'PUT',
+                headers: { ...HEADERS, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || 'Failed to save');
+            }
+            const data = await res.json();
+            articlesFileSha = data.content.sha;
+            return data;
+        }
+
+        async function uploadImage(file) {
+            const base64 = await fileToBase64(file);
+            const filename = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
+            const path = `uploads/${filename}`;
+            const body = {
+                message: `Upload image: ${filename}`,
+                content: base64
+            };
+            const res = await fetch(`${REPO_API}/contents/${path}`, {
+                method: 'PUT',
+                headers: { ...HEADERS, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || 'Image upload failed');
+            }
+            return `/${path}`;
+        }
+
+        async function deleteImage(imagePath) {
+            if (!imagePath || !imagePath.startsWith('/uploads/')) return;
+            try {
+                const path = imagePath.substring(1);
+                const res = await fetch(`${REPO_API}/contents/${path}`, { headers: HEADERS });
+                if (!res.ok) return;
+                const data = await res.json();
+                await fetch(`${REPO_API}/contents/${path}`, {
+                    method: 'DELETE',
+                    headers: { ...HEADERS, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: `Delete image: ${path}`, sha: data.sha })
+                });
+            } catch (err) { console.error('Delete image error:', err); }
+        }
+
+        async function loadArticles() {
+            try {
+                allArticles = await getArticlesFile();
+                allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+                renderDashboard();
+                renderAll();
+            } catch (err) { showToast('Error loading articles', 'error'); }
+        }
+
+        function renderDashboard() {
+            const pub = allArticles.filter(a => a.status === 'published');
+            const drafts = allArticles.filter(a => a.status === 'draft');
+            const featured = allArticles.filter(a => a.featured);
+            document.getElementById('statTotal').textContent = allArticles.length;
+            document.getElementById('statPublished').textContent = pub.length;
+            document.getElementById('statDrafts').textContent = drafts.length;
+            document.getElementById('statFeatured').textContent = featured.length;
+            const recent = allArticles.slice(0, 5);
+            document.getElementById('recentBody').innerHTML = recent.length === 0
+                ? '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">No articles yet. Create your first!</td></tr>'
+                : recent.map(row).join('');
+        }
+
+        function renderAll() {
+            document.getElementById('allBody').innerHTML = allArticles.length === 0
+                ? '<tr><td colspan="6" style="text-align:center;padding:40px;">No articles yet.</td></tr>'
+                : allArticles.map(a => rowFull(a)).join('');
+        }
+
+        function row(a) {
+            const date = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const sc = a.status === 'published' ? 'status-published' : 'status-draft';
+            const sl = a.status === 'published' ? 'Published' : 'Draft';
+            return `<tr>
+                <td><strong>${a.title.substring(0, 50)}${a.title.length>50?'...':''}</strong>${a.featured?'<span class="featured-star">★</span>':''}</td>
+                <td>${a.category}</td>
+                <td><span class="status-badge ${sc}">${sl}</span></td>
+                <td>${date}</td>
+                <td><div class="btn-group">
+                    <button class="btn btn-sm" onclick="editArticle('${a.id}')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteArticle('${a.id}')">×</button>
+                </div></td>
+            </tr>`;
+        }
+
+        function rowFull(a) {
+            const date = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year:'numeric' });
+            const sc = a.status === 'published' ? 'status-published' : 'status-draft';
+            const sl = a.status === 'published' ? 'Published' : 'Draft';
+            return `<tr>
+                <td><strong>${a.title.substring(0, 50)}${a.title.length>50?'...':''}</strong>${a.featured?'<span class="featured-star">★</span>':''}</td>
+                <td>${a.category}</td>
+                <td>${a.author}</td>
+                <td><span class="status-badge ${sc}">${sl}</span></td>
+                <td>${date}</td>
+                <td><div class="btn-group">
+                    <button class="btn btn-sm" onclick="editArticle('${a.id}')">Edit</button>
+                    ${a.status==='published'?`<a class="btn btn-sm btn-secondary" href="/article.html?slug=${a.slug}" target="_blank">View</a>`:''}
+                    <button class="btn btn-sm btn-danger" onclick="deleteArticle('${a.id}')">×</button>
+                </div></td>
+            </tr>`;
+        }
+
+        async function saveArticle(e) {
+            e.preventDefault();
+            const id = document.getElementById('articleId').value;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            try {
+                showLoading('Saving to GitHub...');
+                let imageUrl = null;
+                if (imageFile) {
+                    showLoading('Uploading image...');
+                    imageUrl = await uploadImage(imageFile);
+                }
+                const wordCount = content.split(/\s+/).length;
+                const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+                if (id) {
+                    const index = allArticles.findIndex(a => a.id === id);
+                    if (index !== -1) {
+                        const old = allArticles[index];
+                        allArticles[index] = {
+                            ...old,
+                            title,
+                            slug: slugify(title),
+                            content,
+                            excerpt: document.getElementById('excerpt').value || content.substring(0, 180) + '...',
+                            category: document.getElementById('category').value,
+                            author: document.getElementById('author').value,
+                            status: document.getElementById('status').value,
+                            featured: document.getElementById('featured').checked,
+                            metaTitle: document.getElementById('metaTitle').value || title,
+                            metaDescription: document.getElementById('metaDescription').value || '',
+                            readTime,
+                            image: imageUrl || old.image,
+                            updatedAt: new Date().toISOString()
+                        };
+                    }
+                } else {
+                    const newArticle = {
+                        id: generateId(),
+                        title,
+                        slug: slugify(title),
+                        content,
+                        excerpt: document.getElementById('excerpt').value || content.substring(0, 180) + '...',
+                        category: document.getElementById('category').value,
+                        author: document.getElementById('author').value,
+                        status: document.getElementById('status').value,
+                        featured: document.getElementById('featured').checked,
+                        metaTitle: document.getElementById('metaTitle').value || title,
+                        metaDescription: document.getElementById('metaDescription').value || '',
+                        readTime,
+                        image: imageUrl,
+                        date: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    allArticles.unshift(newArticle);
+                }
+
+                showLoading('Publishing to GitHub...');
+                await saveArticlesFile(allArticles);
+                hideLoading();
+                showToast(id ? '✓ Article updated' : '✓ Article published', 'success');
+                showToast('Cloudflare will deploy in ~30s', 'info');
+                showSection('articles', null);
+            } catch (err) {
+                hideLoading();
+                showToast(err.message || 'Error saving', 'error');
+            }
+        }
+
+        function editArticle(id) {
+            const a = allArticles.find(x => x.id === id);
+            if (!a) return;
+            document.getElementById('articleId').value = a.id;
+            document.getElementById('title').value = a.title;
+            document.getElementById('content').value = a.content;
+            document.getElementById('excerpt').value = a.excerpt || '';
+            document.getElementById('category').value = a.category;
+            document.getElementById('author').value = a.author;
+            document.getElementById('status').value = a.status;
+            document.getElementById('metaTitle').value = a.metaTitle || '';
+            document.getElementById('metaDescription').value = a.metaDescription || '';
+            document.getElementById('featured').checked = !!a.featured;
+            document.getElementById('formTitle').innerHTML = 'Edit <span class="accent">Article</span>';
+            document.getElementById('submitBtn').textContent = '💾 Update Article';
+            if (a.image) document.getElementById('imagePreview').innerHTML = `<img src="${a.image}" style="width:100%;display:block;">`;
+            showSection('new', null);
+        }
+
+        function deleteArticle(id) {
+            deleteTarget = id;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        async function confirmDelete() {
+            if (!deleteTarget) return;
+            closeModal();
+            try {
+                showLoading('Deleting article...');
+                const article = allArticles.find(a => a.id === deleteTarget);
+                if (article && article.image) await deleteImage(article.image);
+                allArticles = allArticles.filter(a => a.id !== deleteTarget);
+                await saveArticlesFile(allArticles);
+                hideLoading();
+                showToast('✓ Article deleted', 'success');
+                loadArticles();
+            } catch (err) {
+                hideLoading();
+                showToast(err.message || 'Error deleting', 'error');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            deleteTarget = null;
+        }
+
+        function showSection(s, el) {
+            document.querySelectorAll('[id^="sec-"]').forEach(e => e.style.display = 'none');
+            document.getElementById(`sec-${s}`).style.display = 'block';
+            document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+            if (el) el.classList.add('active');
+            if (s === 'dashboard' || s === 'articles') loadArticles();
+            if (s === 'new') resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('articleForm').reset();
+            document.getElementById('articleId').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('author').value = 'Atlantis Editorial';
+            document.getElementById('formTitle').innerHTML = 'New <span class="accent">Article</span>';
+            document.getElementById('submitBtn').textContent = '📤 Publish Article';
+        }
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const r = new FileReader();
+                r.onload = e => document.getElementById('imagePreview').innerHTML = `<img src="${e.target.result}" style="width:100%;display:block;">`;
+                r.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function logout() {
+            if (confirm('Sign out?')) {
+                localStorage.removeItem('atlantis_github');
+                window.location.href = '/admin/';
+            }
+        }
+
+        loadArticles();
+    </script>
+</body>
+</html>
