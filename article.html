@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Loading... — Atlantis Privée</title>
+    <meta name="description" id="metaDesc" content="">
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'es,fr,de,it,pt,zh-CN,ja,ko,ar,ru,hi',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-mark">A</span>
+                <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+            </a>
+            <nav class="nav" id="mainNav">
+                <a href="/">Home</a>
+                <a href="/#articles">Articles</a>
+                <a href="/#newsletter">Newsletter</a>
+            </nav>
+            <div class="header-actions">
+                <div id="google_translate_element" style="display:none;"></div>
+                <select class="lang-switcher" onchange="changeLang(this.value)">
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="de">🇩🇪 DE</option>
+                    <option value="pt">🇵🇹 PT</option>
+                </select>
+                <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="article-hero" id="articleHero">
+        <div class="loading" style="margin-top: 200px;"><div class="loading-spinner"></div><p>Loading article...</p></div>
+    </section>
+
+    <div class="article-body-wrap">
+        <article class="article-body" id="articleBody"></article>
+
+        <aside class="sidebar">
+            <div class="cta-box">
+                <h3>Were You Injured?</h3>
+                <p>Connect with top-rated personal injury attorneys for a free, no-obligation case evaluation.</p>
+                <a href="#" class="btn">Get Free Review</a>
+            </div>
+
+            <div class="sidebar-widget">
+                <h4>Related Reading</h4>
+                <div id="relatedArticles"><p style="color: var(--text-muted); font-size:0.85rem;">Loading...</p></div>
+            </div>
+
+            <div class="ad-space">
+                📢 Ad Space<br>
+                <small style="font-size:0.75rem; opacity:0.5; margin-top:8px; display:block;">AdSense or affiliate banner</small>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="/" class="logo">
+                    <span class="logo-mark">A</span>
+                    <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+                </a>
+                <p>The premier digital publication for personal injury law and insurance claims intelligence.</p>
+            </div>
+            <div>
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="#">Car Accidents</a></li>
+                    <li><a href="#">Insurance Claims</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Free Case Review</a></li>
+                    <li><a href="#">Find an Attorney</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Atlantis Privée. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        async function loadArticle() {
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+            if (!slug) return window.location.href = '/';
+
+            try {
+                const res = await fetch('/data/articles.json?t=' + Date.now());
+                const articles = await res.json();
+                const article = articles.find(a => a.slug === slug && a.status === 'published');
+                if (!article) throw new Error('Not found');
+
+                renderArticle(article);
+                loadRelated(article.category, slug, articles);
+            } catch (err) {
+                document.getElementById('articleHero').innerHTML = `
+                    <div class="article-hero-overlay">
+                        <div class="article-hero-content" style="text-align: center;">
+                            <h1>Article Not Found</h1>
+                            <p style="margin: 20px 0;">The article doesn't exist or has been removed.</p>
+                            <a href="/" class="btn-primary">← Back Home</a>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('articleBody').innerHTML = '';
+            }
+        }
+
+        function renderArticle(a) {
+            document.getElementById('pageTitle').textContent = `${a.metaTitle || a.title} — Atlantis Privée`;
+            document.getElementById('metaDesc').setAttribute('content', a.metaDescription || a.excerpt);
+
+            document.getElementById('articleHero').innerHTML = `
+                ${a.image ? `<img src="${a.image}" alt="${a.title}">` : '<div style="width:100%;height:100%;background:linear-gradient(135deg, #1a1a1a, #333);"></div>'}
+                <div class="article-hero-overlay">
+                    <div class="article-hero-content">
+                        <span class="category-tag">${a.category}</span>
+                        <h1>${a.title}</h1>
+                        <div class="article-hero-meta">
+                            <span>✍️ ${a.author}</span>
+                            <span>📅 ${new Date(a.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            <span>⏱ ${a.readTime || 5} min read</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('articleBody').innerHTML = `
+                ${marked.parse(a.content || '')}
+                <div class="cta-box" style="margin-top: 60px;">
+                    <h3>🏛️ Need Legal Representation?</h3>
+                    <p>Don't face the insurance companies alone. Get matched with experienced attorneys in your state.</p>
+                    <a href="#" class="btn">Get Free Consultation</a>
+                </div>
+            `;
+        }
+
+        function loadRelated(category, currentSlug, allArticles) {
+            const related = allArticles.filter(a => a.category === category && a.slug !== currentSlug && a.status === 'published').slice(0, 4);
+            const c = document.getElementById('relatedArticles');
+            if (related.length === 0) {
+                c.innerHTML = '<p style="color: var(--text-muted); font-size:0.85rem;">No related articles yet.</p>';
+                return;
+            }
+            c.innerHTML = related.map(a => `
+                <a href="/article.html?slug=${a.slug}" class="sidebar-article" style="cursor:pointer;">
+                    <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='var(--bg-elevated)'; this.src='';">
+                    <div>
+                        <h5>${a.title}</h5>
+                        <small>${new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</small>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function toggleNav() { document.getElementById('mainNav').classList.toggle('open'); }
+        function changeLang(lang) {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) { select.value = lang; select.dispatchEvent(new Event('change')); }
+        }
+
+        setInterval(() => {
+            const banner = document.querySelector('.skiptranslate');
+            if (banner) banner.style.display = 'none';
+            document.body.style.top = '0px';
+        }, 500);
+
+        loadArticle();
+    </script>
+</body>
+</html>
