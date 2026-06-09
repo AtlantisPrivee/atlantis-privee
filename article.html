@@ -34,12 +34,6 @@
         <article class="article-body" id="articleBody"></article>
 
         <aside class="sidebar">
-            <div class="cta-box">
-                <h3>Were You Injured?</h3>
-                <p>Connect with top-rated personal injury attorneys for a free, no-obligation case evaluation.</p>
-                <a href="#" class="btn">Get Free Review</a>
-            </div>
-
             <div class="sidebar-widget">
                 <h4>Related Reading</h4>
                 <div id="relatedArticles"><p style="color: var(--text-muted); font-size:0.85rem;">Loading...</p></div>
@@ -135,14 +129,7 @@
                 </div>
             `;
 
-            document.getElementById('articleBody').innerHTML = `
-                ${marked.parse(a.content || '')}
-                <div class="cta-box" style="margin-top: 60px;">
-                    <h3>🏛️ Need Legal Representation?</h3>
-                    <p>Don't face the insurance companies alone. Get matched with experienced attorneys in your state.</p>
-                    <a href="#" class="btn">Get Free Consultation</a>
-                </div>
-            `;
+            document.getElementById('articleBody').innerHTML = marked.parse(a.content || '');
         }
 
         function loadRelated(category, currentSlug, allArticles) {
