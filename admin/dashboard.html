@@ -131,7 +131,16 @@
 
                         <div class="form-group">
                             <label>Content (Markdown) *</label>
-                            <textarea id="content" required placeholder="## Heading&#10;&#10;Write your article in Markdown.&#10;&#10;**Bold** and *italic*&#10;&#10;- List item 1&#10;- List item 2&#10;&#10;> Important quote"></textarea>
+                            <textarea id="content" required placeholder="## Heading
+
+Write your article in Markdown.
+
+**Bold** and *italic*
+
+- List item 1
+- List item 2
+
+> Important quote"></textarea>
                             <small>Markdown supported: ## headings, **bold**, *italic*, - lists, > quotes</small>
                         </div>
 
@@ -206,16 +215,17 @@
         let articlesFileSha = null;
         let deleteTarget = null;
 
-        function showLoading(text = 'Saving to GitHub...') {
-            document.getElementById('loadingText').textContent = text;
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text || 'Saving to GitHub...';
             document.getElementById('loadingOverlay').classList.add('active');
         }
         function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
-        function showToast(msg, type = 'success') {
+        function showToast(msg, type) {
+            type = type || 'success';
             const t = document.getElementById('toast');
             t.textContent = msg;
-            t.className = `toast ${type} show`;
-            setTimeout(() => t.classList.remove('show'), 4000);
+            t.className = 'toast ' + type + ' show';
+            setTimeout(function() { t.classList.remove('show'); }, 4000);
         }
         function slugify(text) {
             return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
@@ -223,10 +233,10 @@
         function generateId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
         }
-        async function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
+        function fileToBase64(file) {
+            return new Promise(function(resolve, reject) {
                 const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onload = function() { resolve(reader.result.split(',')[1]); };
                 reader.onerror = reject;
                 reader.readAsDataURL(file);
             });
@@ -234,7 +244,7 @@
 
         async function getArticlesFile() {
             try {
-                const res = await fetch(`${REPO_API}/contents/data/articles.json`, { headers: HEADERS });
+                const res = await fetch(REPO_API + '/contents/data/articles.json', { headers: HEADERS });
                 if (!res.ok) throw new Error('Cannot fetch articles');
                 const data = await res.json();
                 articlesFileSha = data.sha;
@@ -249,13 +259,13 @@
         async function saveArticlesFile(articles) {
             const content = btoa(unescape(encodeURIComponent(JSON.stringify(articles, null, 2))));
             const body = {
-                message: `Update articles - ${new Date().toISOString()}`,
+                message: 'Update articles - ' + new Date().toISOString(),
                 content: content,
                 sha: articlesFileSha
             };
-            const res = await fetch(`${REPO_API}/contents/data/articles.json`, {
+            const res = await fetch(REPO_API + '/contents/data/articles.json', {
                 method: 'PUT',
-                headers: { ...HEADERS, 'Content-Type': 'application/json' },
+                headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
                 body: JSON.stringify(body)
             });
             if (!res.ok) {
@@ -269,35 +279,35 @@
 
         async function uploadImage(file) {
             const base64 = await fileToBase64(file);
-            const filename = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
-            const path = `uploads/${filename}`;
+            const filename = Date.now() + '-' + file.name.replace(/\s/g, '-');
+            const path = 'uploads/' + filename;
             const body = {
-                message: `Upload image: ${filename}`,
+                message: 'Upload image: ' + filename,
                 content: base64
             };
-            const res = await fetch(`${REPO_API}/contents/${path}`, {
+            const res = await fetch(REPO_API + '/contents/' + path, {
                 method: 'PUT',
-                headers: { ...HEADERS, 'Content-Type': 'application/json' },
+                headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
                 body: JSON.stringify(body)
             });
             if (!res.ok) {
                 const err = await res.json();
                 throw new Error(err.message || 'Image upload failed');
             }
-            return `/${path}`;
+            return '/' + path;
         }
 
         async function deleteImage(imagePath) {
             if (!imagePath || !imagePath.startsWith('/uploads/')) return;
             try {
                 const path = imagePath.substring(1);
-                const res = await fetch(`${REPO_API}/contents/${path}`, { headers: HEADERS });
+                const res = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS });
                 if (!res.ok) return;
                 const data = await res.json();
-                await fetch(`${REPO_API}/contents/${path}`, {
+                await fetch(REPO_API + '/contents/' + path, {
                     method: 'DELETE',
-                    headers: { ...HEADERS, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: `Delete image: ${path}`, sha: data.sha })
+                    headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
+                    body: JSON.stringify({ message: 'Delete image: ' + path, sha: data.sha })
                 });
             } catch (err) { console.error('Delete image error:', err); }
         }
@@ -305,16 +315,16 @@
         async function loadArticles() {
             try {
                 allArticles = await getArticlesFile();
-                allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+                allArticles.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
                 renderDashboard();
                 renderAll();
             } catch (err) { showToast('Error loading articles', 'error'); }
         }
 
         function renderDashboard() {
-            const pub = allArticles.filter(a => a.status === 'published');
-            const drafts = allArticles.filter(a => a.status === 'draft');
-            const featured = allArticles.filter(a => a.featured);
+            const pub = allArticles.filter(function(a) { return a.status === 'published'; });
+            const drafts = allArticles.filter(function(a) { return a.status === 'draft'; });
+            const featured = allArticles.filter(function(a) { return a.featured; });
             document.getElementById('statTotal').textContent = allArticles.length;
             document.getElementById('statPublished').textContent = pub.length;
             document.getElementById('statDrafts').textContent = drafts.length;
@@ -328,41 +338,42 @@
         function renderAll() {
             document.getElementById('allBody').innerHTML = allArticles.length === 0
                 ? '<tr><td colspan="6" style="text-align:center;padding:40px;">No articles yet.</td></tr>'
-                : allArticles.map(a => rowFull(a)).join('');
+                : allArticles.map(rowFull).join('');
         }
 
         function row(a) {
             const date = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             const sc = a.status === 'published' ? 'status-published' : 'status-draft';
             const sl = a.status === 'published' ? 'Published' : 'Draft';
-            return `<tr>
-                <td><strong>${a.title.substring(0, 50)}${a.title.length>50?'...':''}</strong>${a.featured?'<span class="featured-star">★</span>':''}</td>
-                <td>${a.category}</td>
-                <td><span class="status-badge ${sc}">${sl}</span></td>
-                <td>${date}</td>
-                <td><div class="btn-group">
-                    <button class="btn btn-sm" onclick="editArticle('${a.id}')">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteArticle('${a.id}')">×</button>
-                </div></td>
-            </tr>`;
+            return '<tr>' +
+                '<td><strong>' + a.title.substring(0, 50) + (a.title.length > 50 ? '...' : '') + '</strong>' + (a.featured ? '<span class="featured-star">★</span>' : '') + '</td>' +
+                '<td>' + a.category + '</td>' +
+                '<td><span class="status-badge ' + sc + '">' + sl + '</span></td>' +
+                '<td>' + date + '</td>' +
+                '<td><div class="btn-group">' +
+                '<button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">Edit</button>' +
+                '<button class="btn btn-sm btn-danger" onclick="deleteArticle(\'' + a.id + '\')">×</button>' +
+                '</div></td>' +
+                '</tr>';
         }
 
         function rowFull(a) {
-            const date = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year:'numeric' });
+            const date = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const sc = a.status === 'published' ? 'status-published' : 'status-draft';
             const sl = a.status === 'published' ? 'Published' : 'Draft';
-            return `<tr>
-                <td><strong>${a.title.substring(0, 50)}${a.title.length>50?'...':''}</strong>${a.featured?'<span class="featured-star">★</span>':''}</td>
-                <td>${a.category}</td>
-                <td>${a.author}</td>
-                <td><span class="status-badge ${sc}">${sl}</span></td>
-                <td>${date}</td>
-                <td><div class="btn-group">
-                    <button class="btn btn-sm" onclick="editArticle('${a.id}')">Edit</button>
-                    ${a.status==='published'?`<a class="btn btn-sm btn-secondary" href="/article.html?slug=${a.slug}" target="_blank">View</a>`:''}
-                    <button class="btn btn-sm btn-danger" onclick="deleteArticle('${a.id}')">×</button>
-                </div></td>
-            </tr>`;
+            const viewBtn = a.status === 'published' ? '<a class="btn btn-sm btn-secondary" href="/article.html?slug=' + a.slug + '" target="_blank">View</a>' : '';
+            return '<tr>' +
+                '<td><strong>' + a.title.substring(0, 50) + (a.title.length > 50 ? '...' : '') + '</strong>' + (a.featured ? '<span class="featured-star">★</span>' : '') + '</td>' +
+                '<td>' + a.category + '</td>' +
+                '<td>' + a.author + '</td>' +
+                '<td><span class="status-badge ' + sc + '">' + sl + '</span></td>' +
+                '<td>' + date + '</td>' +
+                '<td><div class="btn-group">' +
+                '<button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">Edit</button>' +
+                viewBtn +
+                '<button class="btn btn-sm btn-danger" onclick="deleteArticle(\'' + a.id + '\')">×</button>' +
+                '</div></td>' +
+                '</tr>';
         }
 
         async function saveArticle(e) {
@@ -383,14 +394,13 @@
                 const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
                 if (id) {
-                    const index = allArticles.findIndex(a => a.id === id);
+                    const index = allArticles.findIndex(function(a) { return a.id === id; });
                     if (index !== -1) {
                         const old = allArticles[index];
-                        allArticles[index] = {
-                            ...old,
-                            title,
+                        allArticles[index] = Object.assign({}, old, {
+                            title: title,
                             slug: slugify(title),
-                            content,
+                            content: content,
                             excerpt: document.getElementById('excerpt').value || content.substring(0, 180) + '...',
                             category: document.getElementById('category').value,
                             author: document.getElementById('author').value,
@@ -398,17 +408,17 @@
                             featured: document.getElementById('featured').checked,
                             metaTitle: document.getElementById('metaTitle').value || title,
                             metaDescription: document.getElementById('metaDescription').value || '',
-                            readTime,
+                            readTime: readTime,
                             image: imageUrl || old.image,
                             updatedAt: new Date().toISOString()
-                        };
+                        });
                     }
                 } else {
                     const newArticle = {
                         id: generateId(),
-                        title,
+                        title: title,
                         slug: slugify(title),
-                        content,
+                        content: content,
                         excerpt: document.getElementById('excerpt').value || content.substring(0, 180) + '...',
                         category: document.getElementById('category').value,
                         author: document.getElementById('author').value,
@@ -416,7 +426,7 @@
                         featured: document.getElementById('featured').checked,
                         metaTitle: document.getElementById('metaTitle').value || title,
                         metaDescription: document.getElementById('metaDescription').value || '',
-                        readTime,
+                        readTime: readTime,
                         image: imageUrl,
                         date: new Date().toISOString(),
                         updatedAt: new Date().toISOString()
@@ -437,7 +447,7 @@
         }
 
         function editArticle(id) {
-            const a = allArticles.find(x => x.id === id);
+            const a = allArticles.find(function(x) { return x.id === id; });
             if (!a) return;
             document.getElementById('articleId').value = a.id;
             document.getElementById('title').value = a.title;
@@ -451,7 +461,7 @@
             document.getElementById('featured').checked = !!a.featured;
             document.getElementById('formTitle').innerHTML = 'Edit <span class="accent">Article</span>';
             document.getElementById('submitBtn').textContent = '💾 Update Article';
-            if (a.image) document.getElementById('imagePreview').innerHTML = `<img src="${a.image}" style="width:100%;display:block;">`;
+            if (a.image) document.getElementById('imagePreview').innerHTML = '<img src="' + a.image + '" style="width:100%;display:block;">';
             showSection('new', null);
         }
 
@@ -465,9 +475,9 @@
             closeModal();
             try {
                 showLoading('Deleting article...');
-                const article = allArticles.find(a => a.id === deleteTarget);
+                const article = allArticles.find(function(a) { return a.id === deleteTarget; });
                 if (article && article.image) await deleteImage(article.image);
-                allArticles = allArticles.filter(a => a.id !== deleteTarget);
+                allArticles = allArticles.filter(function(a) { return a.id !== deleteTarget; });
                 await saveArticlesFile(allArticles);
                 hideLoading();
                 showToast('✓ Article deleted', 'success');
@@ -484,9 +494,11 @@
         }
 
         function showSection(s, el) {
-            document.querySelectorAll('[id^="sec-"]').forEach(e => e.style.display = 'none');
-            document.getElementById(`sec-${s}`).style.display = 'block';
-            document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+            const sections = document.querySelectorAll('[id^="sec-"]');
+            sections.forEach(function(e) { e.style.display = 'none'; });
+            document.getElementById('sec-' + s).style.display = 'block';
+            const navs = document.querySelectorAll('.admin-nav a');
+            navs.forEach(function(a) { a.classList.remove('active'); });
             if (el) el.classList.add('active');
             if (s === 'dashboard' || s === 'articles') loadArticles();
             if (s === 'new') resetForm();
@@ -504,7 +516,9 @@
         function previewImage(input) {
             if (input.files && input.files[0]) {
                 const r = new FileReader();
-                r.onload = e => document.getElementById('imagePreview').innerHTML = `<img src="${e.target.result}" style="width:100%;display:block;">`;
+                r.onload = function(e) {
+                    document.getElementById('imagePreview').innerHTML = '<img src="' + e.target.result + '" style="width:100%;display:block;">';
+                };
                 r.readAsDataURL(input.files[0]);
             }
         }
