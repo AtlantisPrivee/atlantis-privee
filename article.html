@@ -7,17 +7,6 @@
     <meta name="description" id="metaDesc" content="">
     <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'es,fr,de,it,pt,zh-CN,ja,ko,ar,ru,hi',
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
 
@@ -30,17 +19,8 @@
             <nav class="nav" id="mainNav">
                 <a href="/">Home</a>
                 <a href="/#articles">Articles</a>
-                <a href="/#newsletter">Newsletter</a>
             </nav>
             <div class="header-actions">
-                <div id="google_translate_element" style="display:none;"></div>
-                <select class="lang-switcher" onchange="changeLang(this.value)">
-                    <option value="en">🇺🇸 EN</option>
-                    <option value="es">🇪🇸 ES</option>
-                    <option value="fr">🇫🇷 FR</option>
-                    <option value="de">🇩🇪 DE</option>
-                    <option value="pt">🇵🇹 PT</option>
-                </select>
                 <button class="mobile-toggle" onclick="toggleNav()">☰</button>
             </div>
         </div>
@@ -184,16 +164,6 @@
         }
 
         function toggleNav() { document.getElementById('mainNav').classList.toggle('open'); }
-        function changeLang(lang) {
-            const select = document.querySelector('.goog-te-combo');
-            if (select) { select.value = lang; select.dispatchEvent(new Event('change')); }
-        }
-
-        setInterval(() => {
-            const banner = document.querySelector('.skiptranslate');
-            if (banner) banner.style.display = 'none';
-            document.body.style.top = '0px';
-        }, 500);
 
         loadArticle();
     </script>
