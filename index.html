@@ -7,17 +7,6 @@
     <meta name="description" content="Atlantis Privée — The premier resource for personal injury law, insurance claims, and legal guidance in the United States.">
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="/style.css">
-
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'es,fr,de,it,pt,zh-CN,ja,ko,ar,ru,hi',
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
 
@@ -30,24 +19,8 @@
             <nav class="nav" id="mainNav">
                 <a href="/" class="active">Home</a>
                 <a href="#articles">Articles</a>
-                <a href="#newsletter">Newsletter</a>
-                <a href="#about">About</a>
             </nav>
             <div class="header-actions">
-                <div id="google_translate_element" style="display:none;"></div>
-                <select class="lang-switcher" onchange="changeLang(this.value)">
-                    <option value="en">🇺🇸 EN</option>
-                    <option value="es">🇪🇸 ES</option>
-                    <option value="fr">🇫🇷 FR</option>
-                    <option value="de">🇩🇪 DE</option>
-                    <option value="pt">🇵🇹 PT</option>
-                    <option value="zh-CN">🇨🇳 ZH</option>
-                    <option value="ja">🇯🇵 JA</option>
-                </select>
-                <div class="live-indicator">
-                    <span class="live-dot"></span>
-                    <span>LIVE</span>
-                </div>
                 <button class="mobile-toggle" onclick="toggleNav()">☰</button>
             </div>
         </div>
@@ -57,7 +30,6 @@
         <div class="hero-bg-text">PRIVÉE</div>
         <div class="hero-content">
             <div class="hero-text">
-                <span class="hero-badge">★ Premier Legal Intelligence</span>
                 <h1 class="hero-title">
                     Maximize Your <span class="accent">Settlement.</span><br>
                     Protect Your <span class="accent">Rights.</span>
@@ -68,7 +40,6 @@
                 </p>
                 <div class="hero-cta">
                     <a href="#articles" class="btn-primary">Explore Articles →</a>
-                    <a href="#newsletter" class="btn-outline">Join Newsletter</a>
                 </div>
             </div>
             <div class="hero-visual">
@@ -108,17 +79,6 @@
         </div>
 
         <div class="articles-grid" id="articlesGrid"></div>
-    </section>
-
-    <section class="section" id="newsletter">
-        <div class="newsletter">
-            <h2>Join the <span style="color: var(--accent); font-style: italic;">Privée</span> Circle</h2>
-            <p>Exclusive legal insights, case studies, and settlement strategies delivered weekly.</p>
-            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
-                <input type="email" placeholder="Enter your email" required>
-                <button type="submit" class="btn-primary">Subscribe</button>
-            </form>
-        </div>
     </section>
 
     <footer class="footer">
@@ -273,17 +233,6 @@
         function toggleNav() {
             document.getElementById('mainNav').classList.toggle('open');
         }
-
-        function changeLang(lang) {
-            const select = document.querySelector('.goog-te-combo');
-            if (select) { select.value = lang; select.dispatchEvent(new Event('change')); }
-        }
-
-        setInterval(() => {
-            const banner = document.querySelector('.skiptranslate');
-            if (banner) banner.style.display = 'none';
-            document.body.style.top = '0px';
-        }, 500);
 
         loadArticles();
     </script>
