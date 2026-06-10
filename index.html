@@ -28,6 +28,8 @@
             <nav class="nav" id="mainNav">
                 <a href="/" class="active">Home</a>
                 <a href="#articles">Articles</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
             </nav>
             <div class="header-actions">
                 <button class="mobile-toggle" onclick="toggleNav()">☰</button>
@@ -105,34 +107,48 @@
             <div>
                 <h4>Categories</h4>
                 <ul>
-                    <li><a href="#">Car Accidents</a></li>
-                    <li><a href="#">Insurance Claims</a></li>
-                    <li><a href="#">Personal Injury</a></li>
-                    <li><a href="#">Workers Comp</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="#">Free Case Review</a></li>
-                    <li><a href="#">Find an Attorney</a></li>
-                    <li><a href="#">Insurance Guide</a></li>
+                    <li><a href="/">Car Accidents</a></li>
+                    <li><a href="/">Insurance Claims</a></li>
+                    <li><a href="/">Personal Injury</a></li>
+                    <li><a href="/">Workers Comp</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy</a></li>
+                    <li><a href="/about.html">About Us</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    <li><a href="/cookie-policy.html">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Atlantis Privée. All rights reserved.</p>
+            <p>&copy; 2025 Atlantis Privée. All rights reserved.</p>
             <p>For informational purposes only</p>
         </div>
     </footer>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-banner-inner">
+            <div class="cookie-banner-text">
+                <h4>🍪 We Value Your Privacy</h4>
+                <p>We use cookies to enhance your browsing experience, serve personalized ads, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies. <a href="/cookie-policy.html">Learn more</a></p>
+            </div>
+            <div class="cookie-banner-buttons">
+                <button class="btn-cookie-reject" onclick="rejectCookies()">Reject</button>
+                <button class="btn-cookie-accept" onclick="acceptCookies()">Accept All</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         let allArticles = [];
@@ -243,7 +259,28 @@
             document.getElementById('mainNav').classList.toggle('open');
         }
 
+        // Cookie Banner Functions
+        function showCookieBanner() {
+            if (!localStorage.getItem('cookie_consent')) {
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.add('show');
+                }, 1000);
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookie_consent', 'accepted');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        function rejectCookies() {
+            localStorage.setItem('cookie_consent', 'rejected');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        // Initialize
         loadArticles();
+        showCookieBanner();
     </script>
 </body>
 </html>
