@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — Atlantis Privée</title>
+    <meta name="description" content="Contact Atlantis Privée. Get in touch with our editorial team for inquiries, feedback, or partnership opportunities.">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="/style.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WZ6E1P3SKB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-WZ6E1P3SKB');
+    </script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-mark">A</span>
+                <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+            </a>
+            <nav class="nav" id="mainNav">
+                <a href="/">Home</a>
+                <a href="/#articles">Articles</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html" class="active">Contact</a>
+            </nav>
+            <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+        </div>
+    </header>
+
+    <main class="legal-page">
+        <div class="legal-container">
+            <h1>Get in <span style="color: var(--accent); font-style: italic;">Touch</span></h1>
+            <p class="legal-updated">We'd love to hear from you</p>
+
+            <div class="contact-grid">
+                <div class="contact-info-card">
+                    <h3>📧 Email Us</h3>
+                    <p>For general inquiries, feedback, or partnership opportunities:</p>
+                    <p><a href="mailto:contact@atlantisprivee.com" class="contact-email">contact@atlantisprivee.com</a></p>
+                    <p class="response-time">⏱️ Response time: 24-48 hours</p>
+                </div>
+
+                <div class="contact-info-card">
+                    <h3>💼 Business Inquiries</h3>
+                    <p>For advertising, sponsorships, or business partnerships:</p>
+                    <p><a href="mailto:contact@atlantisprivee.com?subject=Business Inquiry" class="contact-email">Business Contact</a></p>
+                </div>
+
+                <div class="contact-info-card">
+                    <h3>📝 Content Feedback</h3>
+                    <p>Have a topic suggestion or found an error?</p>
+                    <p><a href="mailto:contact@atlantisprivee.com?subject=Content Feedback" class="contact-email">Send Feedback</a></p>
+                </div>
+            </div>
+
+            <h2>Send Us a Message</h2>
+            <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+
+            <form class="contact-form" action="https://formsubmit.co/contact@atlantisprivee.com" method="POST">
+
+                <input type="hidden" name="_subject" value="New contact from Atlantis Privée">
+                <input type="hidden" name="_captcha" value="true">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_next" value="https://atlantisprivee.com/contact.html?success=true">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email *</label>
+                        <input type="email" id="email" name="email" required placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select a topic</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Content Feedback">Content Feedback</option>
+                        <option value="Topic Suggestion">Topic Suggestion</option>
+                        <option value="Correction Request">Correction Request</option>
+                        <option value="Partnership Opportunity">Partnership Opportunity</option>
+                        <option value="Advertising Inquiry">Advertising Inquiry</option>
+                        <option value="Press / Media">Press / Media</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message *</label>
+                    <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
+                </div>
+
+                <div class="form-group checkbox-consent">
+                    <input type="checkbox" id="privacy" required>
+                    <label for="privacy">I have read and agree to the <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-of-service.html">Terms of Service</a>.</label>
+                </div>
+
+                <button type="submit" class="btn-primary contact-submit">Send Message →</button>
+            </form>
+
+            <div id="successMessage" class="success-message" style="display:none;">
+                <h3>✅ Message Sent Successfully!</h3>
+                <p>Thank you for contacting us. We'll get back to you within 24-48 hours.</p>
+            </div>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <h3>Can you provide legal advice for my case?</h3>
+                <p>No. Atlantis Privée is NOT a law firm and we do NOT provide legal advice. For specific legal questions, please consult with a qualified attorney in your jurisdiction. See our <a href="/disclaimer.html">Disclaimer</a> for more information.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can you recommend a specific attorney?</h3>
+                <p>We don't make individual attorney recommendations. We suggest contacting your state bar association for referrals to qualified attorneys in your area.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How long does it take to get a response?</h3>
+                <p>We typically respond to inquiries within 24-48 hours during business days. Complex inquiries may take longer.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Do you accept guest posts?</h3>
+                <p>We occasionally accept high-quality guest posts from qualified contributors. Please contact us with your proposal and credentials.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I use your content on my website?</h3>
+                <p>All content on Atlantis Privée is copyrighted. Please contact us for licensing or republication permissions. See our <a href="/terms-of-service.html">Terms of Service</a> for more details.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="/" class="logo">
+                    <span class="logo-mark">A</span>
+                    <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+                </a>
+                <p>The premier digital publication for personal injury law and insurance claims intelligence.</p>
+            </div>
+            <div>
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="/">Car Accidents</a></li>
+                    <li><a href="/">Insurance Claims</a></li>
+                    <li><a href="/">Personal Injury</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about.html">About Us</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Atlantis Privée. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleNav() {
+            document.getElementById('mainNav').classList.toggle('open');
+        }
+
+        // Show success message if redirected
+        if (window.location.search.includes('success=true')) {
+            document.getElementById('successMessage').style.display = 'block';
+            document.querySelector('.contact-form').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
