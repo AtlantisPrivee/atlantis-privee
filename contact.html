@@ -31,115 +31,221 @@
                 <a href="/about.html">About</a>
                 <a href="/contact.html" class="active">Contact</a>
             </nav>
-            <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+            <div class="header-actions">
+                <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+            </div>
         </div>
     </header>
 
+    <!-- HERO -->
+    <section class="legal-hero">
+        <div class="legal-hero-content">
+            <div class="legal-hero-icon">💬</div>
+            <h1>Get in <span class="accent">Touch</span></h1>
+            <p class="legal-hero-subtitle">We'd love to hear from you. Whether you have questions, feedback, or partnership inquiries, our team is here to help.</p>
+            <div class="legal-hero-badge">
+                <span class="dot"></span>
+                Response time: 24-48 hours
+            </div>
+        </div>
+    </section>
+
     <main class="legal-page">
         <div class="legal-container">
-            <h1>Get in <span style="color: var(--accent); font-style: italic;">Touch</span></h1>
-            <p class="legal-updated">We'd love to hear from you</p>
 
-            <div class="contact-grid">
-                <div class="contact-info-card">
-                    <h3>📧 Email Us</h3>
-                    <p>For general inquiries, feedback, or partnership opportunities:</p>
-                    <p><a href="mailto:contact@atlantisprivee.com" class="contact-email">contact@atlantisprivee.com</a></p>
-                    <p class="response-time">⏱️ Response time: 24-48 hours</p>
-                </div>
-
-                <div class="contact-info-card">
-                    <h3>💼 Business Inquiries</h3>
-                    <p>For advertising, sponsorships, or business partnerships:</p>
-                    <p><a href="mailto:contact@atlantisprivee.com?subject=Business Inquiry" class="contact-email">Business Contact</a></p>
-                </div>
-
-                <div class="contact-info-card">
-                    <h3>📝 Content Feedback</h3>
-                    <p>Have a topic suggestion or found an error?</p>
-                    <p><a href="mailto:contact@atlantisprivee.com?subject=Content Feedback" class="contact-email">Send Feedback</a></p>
-                </div>
-            </div>
-
-            <h2>Send Us a Message</h2>
-            <p>Fill out the form below and we'll get back to you as soon as possible.</p>
-
-            <form class="contact-form" action="https://formsubmit.co/contact@atlantisprivee.com" method="POST">
-
-                <input type="hidden" name="_subject" value="New contact from Atlantis Privée">
-                <input type="hidden" name="_captcha" value="true">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_next" value="https://atlantisprivee.com/contact.html?success=true">
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="name">Your Name *</label>
-                        <input type="text" id="name" name="name" required placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Your Email *</label>
-                        <input type="email" id="email" name="email" required placeholder="you@example.com">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="subject">Subject *</label>
-                    <select id="subject" name="subject" required>
-                        <option value="">Select a topic</option>
-                        <option value="General Inquiry">General Inquiry</option>
-                        <option value="Content Feedback">Content Feedback</option>
-                        <option value="Topic Suggestion">Topic Suggestion</option>
-                        <option value="Correction Request">Correction Request</option>
-                        <option value="Partnership Opportunity">Partnership Opportunity</option>
-                        <option value="Advertising Inquiry">Advertising Inquiry</option>
-                        <option value="Press / Media">Press / Media</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Your Message *</label>
-                    <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
-                </div>
-
-                <div class="form-group checkbox-consent">
-                    <input type="checkbox" id="privacy" required>
-                    <label for="privacy">I have read and agree to the <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-of-service.html">Terms of Service</a>.</label>
-                </div>
-
-                <button type="submit" class="btn-primary contact-submit">Send Message →</button>
-            </form>
-
+            <!-- SUCCESS MESSAGE (only shows after form submission) -->
             <div id="successMessage" class="success-message" style="display:none;">
                 <h3>✅ Message Sent Successfully!</h3>
                 <p>Thank you for contacting us. We'll get back to you within 24-48 hours.</p>
             </div>
 
-            <h2>Frequently Asked Questions</h2>
+            <!-- CONTACT METHODS -->
+            <h2 style="text-align: center; font-family: var(--font-display); font-size: 2rem; margin-bottom: 12px; color: var(--text-primary);">Choose How to <span style="color: var(--accent); font-style: italic;">Connect</span></h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 1.05rem;">Multiple ways to reach our team</p>
 
-            <div class="faq-item">
-                <h3>Can you provide legal advice for my case?</h3>
-                <p>No. Atlantis Privée is NOT a law firm and we do NOT provide legal advice. For specific legal questions, please consult with a qualified attorney in your jurisdiction. See our <a href="/disclaimer.html">Disclaimer</a> for more information.</p>
+            <div class="contact-methods">
+                <div class="contact-method-card">
+                    <div class="contact-method-icon">📧</div>
+                    <h3>General Inquiries</h3>
+                    <p>Questions, feedback, or general topics about our content and services.</p>
+                    <a href="mailto:contact@atlantisprivee.com" class="contact-email">contact@atlantisprivee.com</a>
+                </div>
+
+                <div class="contact-method-card">
+                    <div class="contact-method-icon">💼</div>
+                    <h3>Business & Partnerships</h3>
+                    <p>For advertising, sponsorships, or business collaboration opportunities.</p>
+                    <a href="mailto:contact@atlantisprivee.com?subject=Business Inquiry" class="contact-email">Business Contact</a>
+                </div>
+
+                <div class="contact-method-card">
+                    <div class="contact-method-icon">📝</div>
+                    <h3>Content Feedback</h3>
+                    <p>Topic suggestions, corrections, or feedback on our published articles.</p>
+                    <a href="mailto:contact@atlantisprivee.com?subject=Content Feedback" class="contact-email">Send Feedback</a>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3>Can you recommend a specific attorney?</h3>
-                <p>We don't make individual attorney recommendations. We suggest contacting your state bar association for referrals to qualified attorneys in your area.</p>
+            <!-- INFO BOX -->
+            <div class="legal-box info">
+                <div class="legal-box-icon">⏰</div>
+                <div class="legal-box-content">
+                    <h4>Response Time</h4>
+                    <p>We typically respond to all inquiries within <strong>24-48 hours during business days</strong>. Complex inquiries or partnership requests may take a bit longer. Thank you for your patience!</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3>How long does it take to get a response?</h3>
-                <p>We typically respond to inquiries within 24-48 hours during business days. Complex inquiries may take longer.</p>
+            <!-- CONTACT FORM -->
+            <div class="contact-form-wrapper">
+                <h2>📨 Send Us a Message</h2>
+                <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+
+                <form class="contact-form" action="https://formsubmit.co/contact@atlantisprivee.com" method="POST">
+
+                    <input type="hidden" name="_subject" value="New contact from Atlantis Privée">
+                    <input type="hidden" name="_captcha" value="true">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://atlantisprivee.com/contact.html?success=true">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Your Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email *</label>
+                            <input type="email" id="email" name="email" required placeholder="you@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">— Select a topic —</option>
+                            <option value="General Inquiry">📧 General Inquiry</option>
+                            <option value="Content Feedback">📝 Content Feedback</option>
+                            <option value="Topic Suggestion">💡 Topic Suggestion</option>
+                            <option value="Correction Request">✏️ Correction Request</option>
+                            <option value="Partnership Opportunity">🤝 Partnership Opportunity</option>
+                            <option value="Advertising Inquiry">📢 Advertising Inquiry</option>
+                            <option value="Press / Media">📰 Press / Media</option>
+                            <option value="Other">💬 Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message *</label>
+                        <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you... The more details you provide, the better we can assist you."></textarea>
+                    </div>
+
+                    <div class="form-group checkbox-consent">
+                        <input type="checkbox" id="privacy" required>
+                        <label for="privacy">I have read and agree to the <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-of-service.html">Terms of Service</a>.</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary contact-submit">Send Message →</button>
+                </form>
             </div>
 
-            <div class="faq-item">
-                <h3>Do you accept guest posts?</h3>
-                <p>We occasionally accept high-quality guest posts from qualified contributors. Please contact us with your proposal and credentials.</p>
+            <!-- IMPORTANT NOTICE -->
+            <div class="legal-box warning">
+                <div class="legal-box-icon">⚠️</div>
+                <div class="legal-box-content">
+                    <h4>Important Notice</h4>
+                    <p><strong>We are NOT a law firm and cannot provide legal advice.</strong> For specific legal questions about your situation, please consult with a qualified attorney in your jurisdiction.</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3>Can I use your content on my website?</h3>
-                <p>All content on Atlantis Privée is copyrighted. Please contact us for licensing or republication permissions. See our <a href="/terms-of-service.html">Terms of Service</a> for more details.</p>
+            <!-- FAQ SECTION -->
+            <h2 style="text-align: center; font-family: var(--font-display); font-size: 2rem; margin: 60px 0 12px; color: var(--text-primary);">Frequently Asked <span style="color: var(--accent); font-style: italic;">Questions</span></h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 1.05rem;">Quick answers to common questions</p>
+
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>Can you provide legal advice for my case?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>No.</strong> Atlantis Privée is NOT a law firm and we do NOT provide legal advice. Our content is for informational and educational purposes only. For specific legal questions, please consult with a qualified attorney in your jurisdiction. See our <a href="/disclaimer.html">Disclaimer</a> for more information.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>Can you recommend a specific attorney?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We don't make individual attorney recommendations to maintain our editorial independence. We suggest contacting your <strong>state bar association</strong> for referrals to qualified attorneys in your area, or using established legal directories like Avvo, FindLaw, or Martindale-Hubbell.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>How long does it take to get a response?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We typically respond to inquiries within <strong>24-48 hours during business days</strong>. Partnership inquiries and complex requests may take 3-5 business days. We read every message and try to respond personally to all serious inquiries.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>Do you accept guest posts?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We occasionally accept high-quality guest posts from <strong>qualified contributors</strong> with expertise in personal injury law, insurance, or related fields. Please contact us with your proposal, credentials, and writing samples. Sponsored posts must be clearly disclosed.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>Can I use your content on my website?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All content on Atlantis Privée is <strong>copyrighted</strong>. You may not republish our content without express written permission. However, you may share excerpts (under 200 words) with proper attribution and a link back to the original article. Please contact us for licensing or republication requests. See our <a href="/terms-of-service.html">Terms of Service</a> for more details.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>I found an error in an article. How do I report it?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We appreciate your help in maintaining accuracy! Please use the form above or email us at <strong>contact@atlantisprivee.com</strong> with the subject "Correction Request". Include the article URL and the specific information you believe needs correction. We review all correction requests promptly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>Do you offer advertising opportunities?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer various advertising options including display ads, sponsored content, and partnership opportunities. Please contact us with your business name, target audience, and campaign goals for a customized proposal.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">?</div>
+                        <h3>Can I unsubscribe from your newsletter?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely. Every newsletter we send includes an unsubscribe link at the bottom. You can also email us at <strong>contact@atlantisprivee.com</strong> to be removed from our mailing list. We respect your privacy preferences completely.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINAL CTA -->
+            <div class="legal-final-cta">
+                <h3>🤝 We're Here to Help</h3>
+                <p>No question is too small. Reach out and we'll do our best to point you in the right direction.</p>
             </div>
 
         </div>
@@ -189,10 +295,10 @@
             document.getElementById('mainNav').classList.toggle('open');
         }
 
-        // Show success message if redirected
+        // Show success message if redirected from form
         if (window.location.search.includes('success=true')) {
             document.getElementById('successMessage').style.display = 'block';
-            document.querySelector('.contact-form').style.display = 'none';
+            document.querySelector('.contact-form-wrapper').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
