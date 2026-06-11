@@ -1,15 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- HOMEPAGE -->
   <url>
     <loc>https://atlantisprivee.com/</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- ARTÍCULO 1: Car Accident Settlement Guide -->
   <url>
-    <loc>https://atlantisprivee.com/article.html?slug=how-much-is-my-car-accident-settlement-worth-in-2025-complete-guide</loc>
+    <loc>https://atlantisprivee.com/article?slug=how-much-is-my-car-accident-settlement-worth-in-2025-complete-guide</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- ARTÍCULO 2: What to Do After Car Accident -->
+  <url>
+    <loc>https://atlantisprivee.com/article?slug=what-to-do-after-a-car-accident-a-complete-step-by-step-guide</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ARTÍCULO 3: Fight Denied Insurance Claim -->
+  <url>
+    <loc>https://atlantisprivee.com/article?slug=how-to-fight-a-denied-insurance-claim-and-win</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ARTÍCULO 4: Insurance Adjusters Tactics -->
+  <url>
+    <loc>https://atlantisprivee.com/article?slug=insurance-adjusters-5-dirty-tactics-they-use-against-you-and-how-to-fight-back</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ARTÍCULO 5: Whiplash Settlement Amounts -->
+  <url>
+    <loc>https://atlantisprivee.com/article?slug=average-whiplash-settlement-amounts-in-2025-what-your-neck-injury-is-really-worth</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ARTÍCULO 6: When to Hire Personal Injury Attorney -->
+  <url>
+    <loc>https://atlantisprivee.com/article?slug=when-should-you-hire-a-personal-injury-attorney-9-signs-you-need-one-now</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ARTÍCULO 7: 7 Devastating Mistakes -->
+  <url>
+    <loc>https://atlantisprivee.com/article?slug=7-devastating-mistakes-that-will-destroy-your-personal-injury-claim</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ARTÍCULO 8: Pain and Suffering Calculation -->
+  <url>
+    <loc>https://atlantisprivee.com/article?slug=how-much-is-my-pain-and-suffering-worth-a-complete-calculation-guide-for-2026</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- PÁGINAS LEGALES -->
+  <url>
+    <loc>https://atlantisprivee.com/about.html</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://atlantisprivee.com/contact.html</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://atlantisprivee.com/privacy-policy.html</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://atlantisprivee.com/terms-of-service.html</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://atlantisprivee.com/disclaimer.html</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://atlantisprivee.com/cookie-policy.html</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
 </urlset>
