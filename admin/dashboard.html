@@ -126,7 +126,7 @@
                             <label>Featured Image</label>
                             <input type="file" id="image" accept="image/*" onchange="previewImage(this)">
                             <div class="image-preview" id="imagePreview"></div>
-                            <small>Image will be uploaded to your GitHub repo</small>
+                            <small>Image will be uploaded to your GitHub repo. Leave empty to keep current image when editing.</small>
                         </div>
 
                         <div class="form-group">
@@ -186,7 +186,7 @@ Write your article in Markdown.
     <div class="modal-overlay" id="deleteModal">
         <div class="modal">
             <h3>Delete Article?</h3>
-            <p>This action cannot be undone.</p>
+            <p>This action cannot be undone. The sitemap will be updated automatically.</p>
             <div class="btn-group">
                 <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
@@ -202,12 +202,13 @@ Write your article in Markdown.
     <div class="toast" id="toast"></div>
 
     <script>
+        // ============ SESSION & GITHUB CONFIG ============
         const github = JSON.parse(localStorage.getItem('atlantis_github') || '{}');
         if (!github.token) window.location.href = '/admin/';
 
-        const REPO_API = `https://api.github.com/repos/${github.username}/${github.repo}`;
+        const REPO_API = 'https://api.github.com/repos/' + github.username + '/' + github.repo;
         const HEADERS = {
-            'Authorization': `Bearer ${github.token}`,
+            'Authorization': 'Bearer ' + github.token,
             'Accept': 'application/vnd.github.v3+json'
         };
 
@@ -215,11 +216,16 @@ Write your article in Markdown.
         let articlesFileSha = null;
         let deleteTarget = null;
 
+        // ============ HELPER FUNCTIONS ============
         function showLoading(text) {
             document.getElementById('loadingText').textContent = text || 'Saving to GitHub...';
             document.getElementById('loadingOverlay').classList.add('active');
         }
-        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
         function showToast(msg, type) {
             type = type || 'success';
             const t = document.getElementById('toast');
@@ -227,12 +233,19 @@ Write your article in Markdown.
             t.className = 'toast ' + type + ' show';
             setTimeout(function() { t.classList.remove('show'); }, 4000);
         }
+
         function slugify(text) {
-            return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+            return text.toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
         }
+
         function generateId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
         }
+
         function fileToBase64(file) {
             return new Promise(function(resolve, reject) {
                 const reader = new FileReader();
@@ -242,6 +255,7 @@ Write your article in Markdown.
             });
         }
 
+        // ============ GITHUB API FUNCTIONS ============
         async function getArticlesFile() {
             try {
                 const res = await fetch(REPO_API + '/contents/data/articles.json', { headers: HEADERS });
@@ -309,16 +323,129 @@ Write your article in Markdown.
                     headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
                     body: JSON.stringify({ message: 'Delete image: ' + path, sha: data.sha })
                 });
-            } catch (err) { console.error('Delete image error:', err); }
+            } catch (err) {
+                console.error('Delete image error:', err);
+            }
         }
 
+        // ============ AUTO SITEMAP GENERATOR ============
+        async function updateSitemap(articles) {
+            try {
+                const today = new Date().toISOString().split('T')[0];
+
+                // Filtrar solo artículos publicados
+                const publishedArticles = articles.filter(function(a) {
+                    return a.status === 'published';
+                });
+
+                // Construir XML del sitemap
+                let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
+                sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
+
+                // Homepage (prioridad 1.0)
+                sitemap += '  <!-- HOMEPAGE -->\n';
+                sitemap += '  <url>\n';
+                sitemap += '    <loc>https://atlantisprivee.com/</loc>\n';
+                sitemap += '    <lastmod>' + today + '</lastmod>\n';
+                sitemap += '    <changefreq>daily</changefreq>\n';
+                sitemap += '    <priority>1.0</priority>\n';
+                sitemap += '  </url>\n\n';
+
+                // Artículos publicados (prioridad 0.9)
+                if (publishedArticles.length > 0) {
+                    sitemap += '  <!-- ARTICLES -->\n';
+                    publishedArticles.forEach(function(article) {
+                        const lastmod = article.updatedAt
+                            ? article.updatedAt.split('T')[0]
+                            : (article.date ? article.date.split('T')[0] : today);
+
+                        sitemap += '  <url>\n';
+                        sitemap += '    <loc>https://atlantisprivee.com/article?slug=' + article.slug + '</loc>\n';
+                        sitemap += '    <lastmod>' + lastmod + '</lastmod>\n';
+                        sitemap += '    <changefreq>weekly</changefreq>\n';
+                        sitemap += '    <priority>0.9</priority>\n';
+                        sitemap += '  </url>\n\n';
+                    });
+                }
+
+                // Páginas legales (prioridades variadas)
+                sitemap += '  <!-- LEGAL & COMPANY PAGES -->\n';
+                const legalPages = [
+                    { url: 'about.html', priority: '0.7', freq: 'monthly' },
+                    { url: 'contact.html', priority: '0.6', freq: 'monthly' },
+                    { url: 'privacy-policy.html', priority: '0.4', freq: 'monthly' },
+                    { url: 'terms-of-service.html', priority: '0.4', freq: 'monthly' },
+                    { url: 'disclaimer.html', priority: '0.4', freq: 'monthly' },
+                    { url: 'cookie-policy.html', priority: '0.4', freq: 'monthly' }
+                ];
+
+                legalPages.forEach(function(page) {
+                    sitemap += '  <url>\n';
+                    sitemap += '    <loc>https://atlantisprivee.com/' + page.url + '</loc>\n';
+                    sitemap += '    <lastmod>' + today + '</lastmod>\n';
+                    sitemap += '    <changefreq>' + page.freq + '</changefreq>\n';
+                    sitemap += '    <priority>' + page.priority + '</priority>\n';
+                    sitemap += '  </url>\n\n';
+                });
+
+                sitemap += '</urlset>';
+
+                // Obtener SHA actual del sitemap (si existe)
+                let sitemapSha = null;
+                try {
+                    const res = await fetch(REPO_API + '/contents/sitemap.xml', { headers: HEADERS });
+                    if (res.ok) {
+                        const data = await res.json();
+                        sitemapSha = data.sha;
+                    }
+                } catch (e) {
+                    // El archivo no existe, lo crearemos
+                }
+
+                // Codificar contenido
+                const content = btoa(unescape(encodeURIComponent(sitemap)));
+
+                // Body para GitHub
+                const body = {
+                    message: 'Auto-update sitemap.xml',
+                    content: content
+                };
+
+                if (sitemapSha) {
+                    body.sha = sitemapSha;
+                }
+
+                // Subir a GitHub
+                const updateRes = await fetch(REPO_API + '/contents/sitemap.xml', {
+                    method: 'PUT',
+                    headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
+                    body: JSON.stringify(body)
+                });
+
+                if (!updateRes.ok) {
+                    const errData = await updateRes.json();
+                    console.error('Sitemap update failed:', errData);
+                    throw new Error('Sitemap update failed: ' + (errData.message || 'unknown'));
+                }
+
+                return true;
+            } catch (err) {
+                console.error('Sitemap update error:', err);
+                // No fallar todo si solo el sitemap falla
+                return false;
+            }
+        }
+
+        // ============ ARTICLE FUNCTIONS ============
         async function loadArticles() {
             try {
                 allArticles = await getArticlesFile();
                 allArticles.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
                 renderDashboard();
                 renderAll();
-            } catch (err) { showToast('Error loading articles', 'error'); }
+            } catch (err) {
+                showToast('Error loading articles', 'error');
+            }
         }
 
         function renderDashboard() {
@@ -351,7 +478,7 @@ Write your article in Markdown.
                 '<td><span class="status-badge ' + sc + '">' + sl + '</span></td>' +
                 '<td>' + date + '</td>' +
                 '<td><div class="btn-group">' +
-                '<button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">Edit</button>' +
+                '<button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">✏️ Edit</button>' +
                 '<button class="btn btn-sm btn-danger" onclick="deleteArticle(\'' + a.id + '\')">×</button>' +
                 '</div></td>' +
                 '</tr>';
@@ -361,7 +488,9 @@ Write your article in Markdown.
             const date = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const sc = a.status === 'published' ? 'status-published' : 'status-draft';
             const sl = a.status === 'published' ? 'Published' : 'Draft';
-            const viewBtn = a.status === 'published' ? '<a class="btn btn-sm btn-secondary" href="/article.html?slug=' + a.slug + '" target="_blank">View</a>' : '';
+            const viewBtn = a.status === 'published'
+                ? '<a class="btn btn-sm btn-secondary" href="/article?slug=' + a.slug + '" target="_blank">👁️ View</a>'
+                : '';
             return '<tr>' +
                 '<td><strong>' + a.title.substring(0, 50) + (a.title.length > 50 ? '...' : '') + '</strong>' + (a.featured ? '<span class="featured-star">★</span>' : '') + '</td>' +
                 '<td>' + a.category + '</td>' +
@@ -369,7 +498,7 @@ Write your article in Markdown.
                 '<td><span class="status-badge ' + sc + '">' + sl + '</span></td>' +
                 '<td>' + date + '</td>' +
                 '<td><div class="btn-group">' +
-                '<button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">Edit</button>' +
+                '<button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">✏️ Edit</button>' +
                 viewBtn +
                 '<button class="btn btn-sm btn-danger" onclick="deleteArticle(\'' + a.id + '\')">×</button>' +
                 '</div></td>' +
@@ -385,15 +514,18 @@ Write your article in Markdown.
 
             try {
                 showLoading('Saving to GitHub...');
+
                 let imageUrl = null;
                 if (imageFile) {
                     showLoading('Uploading image...');
                     imageUrl = await uploadImage(imageFile);
                 }
+
                 const wordCount = content.split(/\s+/).length;
                 const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
                 if (id) {
+                    // EDITING EXISTING ARTICLE
                     const index = allArticles.findIndex(function(a) { return a.id === id; });
                     if (index !== -1) {
                         const old = allArticles[index];
@@ -414,6 +546,7 @@ Write your article in Markdown.
                         });
                     }
                 } else {
+                    // CREATING NEW ARTICLE
                     const newArticle = {
                         id: generateId(),
                         title: title,
@@ -434,11 +567,27 @@ Write your article in Markdown.
                     allArticles.unshift(newArticle);
                 }
 
+                // Save articles.json
                 showLoading('Publishing to GitHub...');
                 await saveArticlesFile(allArticles);
+
+                // Auto-update sitemap.xml
+                showLoading('🗺️ Updating sitemap automatically...');
+                const sitemapOk = await updateSitemap(allArticles);
+
                 hideLoading();
                 showToast(id ? '✓ Article updated' : '✓ Article published', 'success');
-                showToast('Cloudflare will deploy in ~30s', 'info');
+
+                if (sitemapOk) {
+                    setTimeout(function() {
+                        showToast('🗺️ Sitemap updated automatically', 'info');
+                    }, 500);
+                }
+
+                setTimeout(function() {
+                    showToast('⏱️ Cloudflare will deploy in ~30s', 'info');
+                }, 1000);
+
                 showSection('articles', null);
             } catch (err) {
                 hideLoading();
@@ -448,7 +597,12 @@ Write your article in Markdown.
 
         function editArticle(id) {
             const a = allArticles.find(function(x) { return x.id === id; });
-            if (!a) return;
+            if (!a) {
+                showToast('Article not found', 'error');
+                return;
+            }
+
+            // Llenar todos los campos del formulario con los datos del artículo
             document.getElementById('articleId').value = a.id;
             document.getElementById('title').value = a.title;
             document.getElementById('content').value = a.content;
@@ -459,10 +613,32 @@ Write your article in Markdown.
             document.getElementById('metaTitle').value = a.metaTitle || '';
             document.getElementById('metaDescription').value = a.metaDescription || '';
             document.getElementById('featured').checked = !!a.featured;
+
+            // Resetear el input de imagen (no se puede pre-rellenar por seguridad del navegador)
+            document.getElementById('image').value = '';
+
+            // Mostrar imagen actual si existe
+            if (a.image) {
+                document.getElementById('imagePreview').innerHTML =
+                    '<div style="margin-bottom:10px; padding:8px; background:var(--bg-elevated); border-radius:6px; font-size:0.85rem; color:var(--text-muted);">' +
+                    '📷 Current image (upload new only to replace)' +
+                    '</div>' +
+                    '<img src="' + a.image + '" style="width:100%;display:block;border-radius:6px;">';
+            } else {
+                document.getElementById('imagePreview').innerHTML = '';
+            }
+
+            // Cambiar el título del formulario y el botón
             document.getElementById('formTitle').innerHTML = 'Edit <span class="accent">Article</span>';
             document.getElementById('submitBtn').textContent = '💾 Update Article';
-            if (a.image) document.getElementById('imagePreview').innerHTML = '<img src="' + a.image + '" style="width:100%;display:block;">';
+
+            // Mostrar la sección de formulario
             showSection('new', null);
+
+            // Scroll al inicio del formulario
+            setTimeout(function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
         }
 
         function deleteArticle(id) {
@@ -473,14 +649,32 @@ Write your article in Markdown.
         async function confirmDelete() {
             if (!deleteTarget) return;
             closeModal();
+
             try {
                 showLoading('Deleting article...');
+
                 const article = allArticles.find(function(a) { return a.id === deleteTarget; });
-                if (article && article.image) await deleteImage(article.image);
+                if (article && article.image) {
+                    await deleteImage(article.image);
+                }
+
                 allArticles = allArticles.filter(function(a) { return a.id !== deleteTarget; });
+
+                showLoading('Updating database...');
                 await saveArticlesFile(allArticles);
+
+                showLoading('🗺️ Updating sitemap automatically...');
+                const sitemapOk = await updateSitemap(allArticles);
+
                 hideLoading();
                 showToast('✓ Article deleted', 'success');
+
+                if (sitemapOk) {
+                    setTimeout(function() {
+                        showToast('🗺️ Sitemap updated automatically', 'info');
+                    }, 500);
+                }
+
                 loadArticles();
             } catch (err) {
                 hideLoading();
@@ -497,9 +691,11 @@ Write your article in Markdown.
             const sections = document.querySelectorAll('[id^="sec-"]');
             sections.forEach(function(e) { e.style.display = 'none'; });
             document.getElementById('sec-' + s).style.display = 'block';
+
             const navs = document.querySelectorAll('.admin-nav a');
             navs.forEach(function(a) { a.classList.remove('active'); });
             if (el) el.classList.add('active');
+
             if (s === 'dashboard' || s === 'articles') loadArticles();
             if (s === 'new') resetForm();
         }
@@ -517,7 +713,11 @@ Write your article in Markdown.
             if (input.files && input.files[0]) {
                 const r = new FileReader();
                 r.onload = function(e) {
-                    document.getElementById('imagePreview').innerHTML = '<img src="' + e.target.result + '" style="width:100%;display:block;">';
+                    document.getElementById('imagePreview').innerHTML =
+                        '<div style="margin-bottom:10px; padding:8px; background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); border-radius:6px; font-size:0.85rem; color:#4ade80;">' +
+                        '✓ New image selected — will replace current one' +
+                        '</div>' +
+                        '<img src="' + e.target.result + '" style="width:100%;display:block;border-radius:6px;">';
                 };
                 r.readAsDataURL(input.files[0]);
             }
@@ -530,6 +730,7 @@ Write your article in Markdown.
             }
         }
 
+        // INITIALIZE
         loadArticles();
     </script>
 </body>
