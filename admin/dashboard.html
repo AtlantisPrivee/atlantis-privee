@@ -328,7 +328,7 @@ Write your article in Markdown.
             }
         }
 
-        // ============ AUTO SITEMAP GENERATOR ============
+        // ============ AUTO SITEMAP GENERATOR (FORMATO CORRECTO SIN .html) ============
         async function updateSitemap(articles) {
             try {
                 const today = new Date().toISOString().split('T')[0];
@@ -351,7 +351,7 @@ Write your article in Markdown.
                 sitemap += '    <priority>1.0</priority>\n';
                 sitemap += '  </url>\n\n';
 
-                // Artículos publicados (prioridad 0.9)
+                // Artículos publicados (FORMATO CORRECTO SIN .html)
                 if (publishedArticles.length > 0) {
                     sitemap += '  <!-- ARTICLES -->\n';
                     publishedArticles.forEach(function(article) {
@@ -368,7 +368,7 @@ Write your article in Markdown.
                     });
                 }
 
-                // Páginas legales (prioridades variadas)
+                // Páginas legales
                 sitemap += '  <!-- LEGAL & COMPANY PAGES -->\n';
                 const legalPages = [
                     { url: 'about.html', priority: '0.7', freq: 'monthly' },
@@ -431,7 +431,6 @@ Write your article in Markdown.
                 return true;
             } catch (err) {
                 console.error('Sitemap update error:', err);
-                // No fallar todo si solo el sitemap falla
                 return false;
             }
         }
@@ -602,7 +601,6 @@ Write your article in Markdown.
                 return;
             }
 
-            // Llenar todos los campos del formulario con los datos del artículo
             document.getElementById('articleId').value = a.id;
             document.getElementById('title').value = a.title;
             document.getElementById('content').value = a.content;
@@ -613,11 +611,8 @@ Write your article in Markdown.
             document.getElementById('metaTitle').value = a.metaTitle || '';
             document.getElementById('metaDescription').value = a.metaDescription || '';
             document.getElementById('featured').checked = !!a.featured;
-
-            // Resetear el input de imagen (no se puede pre-rellenar por seguridad del navegador)
             document.getElementById('image').value = '';
 
-            // Mostrar imagen actual si existe
             if (a.image) {
                 document.getElementById('imagePreview').innerHTML =
                     '<div style="margin-bottom:10px; padding:8px; background:var(--bg-elevated); border-radius:6px; font-size:0.85rem; color:var(--text-muted);">' +
@@ -628,14 +623,11 @@ Write your article in Markdown.
                 document.getElementById('imagePreview').innerHTML = '';
             }
 
-            // Cambiar el título del formulario y el botón
             document.getElementById('formTitle').innerHTML = 'Edit <span class="accent">Article</span>';
             document.getElementById('submitBtn').textContent = '💾 Update Article';
 
-            // Mostrar la sección de formulario
             showSection('new', null);
 
-            // Scroll al inicio del formulario
             setTimeout(function() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 100);
