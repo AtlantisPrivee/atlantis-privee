@@ -117,7 +117,8 @@
                 <h4>Company</h4>
                 <ul>
                     <li><a href="/about.html">About Us</a></li>
-                    <li><a href="/contact.html">Contact</a></li>
+                    <li><a href="/contact.html">Contact Us</a></li>
+                    <li><a href="mailto:contact@atlantisprivee.com">📧 contact@atlantisprivee.com</a></li>
                 </ul>
             </div>
             <div>
@@ -187,7 +188,7 @@
             const sides = articles.slice(1, 3);
 
             grid.innerHTML = `
-                <div class="featured-main" onclick="window.location.href='/article.html?slug=${main.slug}'">
+                <div class="featured-main" onclick="window.location.href='/article?slug=${main.slug}'">
                     <img src="${main.image || ''}" alt="${main.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                     <div class="featured-overlay">
                         <span class="category-tag">${main.category}</span>
@@ -201,7 +202,7 @@
                 </div>
                 <div class="featured-side">
                     ${sides.map(a => `
-                        <div class="featured-side-card" onclick="window.location.href='/article.html?slug=${a.slug}'">
+                        <div class="featured-side-card" onclick="window.location.href='/article?slug=${a.slug}'">
                             <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                             <div class="overlay">
                                 <span class="category-tag">${a.category}</span>
@@ -234,7 +235,7 @@
                 return;
             }
             grid.innerHTML = articles.map(a => `
-                <article class="article-card" onclick="window.location.href='/article.html?slug=${a.slug}'">
+                <article class="article-card" onclick="window.location.href='/article?slug=${a.slug}'">
                     <div class="article-card-image">
                         <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                         <span class="category-tag">${a.category}</span>
