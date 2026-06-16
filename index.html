@@ -3,12 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ============ SEO META TAGS ============ -->
     <title>Atlantis Privée — Premium Personal Injury & Insurance Claims Resource</title>
-    <meta name="description" content="Atlantis Privée — The premier resource for personal injury law, insurance claims, and legal guidance in the United States.">
+    <meta name="description" content="The premier digital resource for personal injury law, insurance claims, and legal guidance in the United States. Expert insights to maximize your settlement.">
+    <meta name="keywords" content="personal injury, insurance claims, car accident settlement, motorcycle accident, truck accident, workers compensation, medical malpractice, slip and fall, dog bite, wrongful death">
+    <meta name="author" content="Atlantis Privée">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://atlantisprivee.com/">
+
+    <!-- ============ FAVICON ============ -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#d4af37">
+
+    <!-- ============ OPEN GRAPH (Facebook, LinkedIn, WhatsApp) ============ -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Atlantis Privée">
+    <meta property="og:title" content="Atlantis Privée — Premium Personal Injury & Insurance Claims Resource">
+    <meta property="og:description" content="The premier digital resource for personal injury law, insurance claims, and legal guidance in the United States. Expert insights to maximize your settlement.">
+    <meta property="og:url" content="https://atlantisprivee.com/">
+    <meta property="og:image" content="https://atlantisprivee.com/apple-touch-icon.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+
+    <!-- ============ TWITTER CARDS ============ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@atlantisprivee">
+    <meta name="twitter:title" content="Atlantis Privée — Premium Personal Injury & Insurance Claims Resource">
+    <meta name="twitter:description" content="The premier digital resource for personal injury law, insurance claims, and legal guidance in the United States.">
+    <meta name="twitter:image" content="https://atlantisprivee.com/apple-touch-icon.png">
+
+    <!-- ============ STYLESHEET ============ -->
     <link rel="stylesheet" href="/style.css">
 
-    <!-- Google tag (gtag.js) -->
+    <!-- ============ SCHEMA.ORG ORGANIZATION ============ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Atlantis Privée",
+      "url": "https://atlantisprivee.com",
+      "logo": "https://atlantisprivee.com/apple-touch-icon.png",
+      "description": "The premier digital publication for personal injury law and insurance claims intelligence in the United States.",
+      "email": "contact@atlantisprivee.com",
+      "sameAs": [],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Editorial",
+        "email": "contact@atlantisprivee.com",
+        "availableLanguage": ["English"]
+      }
+    }
+    </script>
+
+    <!-- ============ SCHEMA.ORG WEBSITE ============ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Atlantis Privée",
+      "url": "https://atlantisprivee.com",
+      "description": "Premium Personal Injury & Insurance Claims Resource",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Atlantis Privée"
+      },
+      "inLanguage": "en-US"
+    }
+    </script>
+
+    <!-- ============ GOOGLE ANALYTICS ============ -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WZ6E1P3SKB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -132,7 +201,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Atlantis Privée. All rights reserved.</p>
+            <p>&copy; 2026 Atlantis Privée. All rights reserved.</p>
             <p>For informational purposes only</p>
         </div>
     </footer>
@@ -260,7 +329,6 @@
             document.getElementById('mainNav').classList.toggle('open');
         }
 
-        // Cookie Banner Functions
         function showCookieBanner() {
             if (!localStorage.getItem('cookie_consent')) {
                 setTimeout(() => {
@@ -279,7 +347,6 @@
             document.getElementById('cookieBanner').classList.remove('show');
         }
 
-        // Initialize
         loadArticles();
         showCookieBanner();
     </script>
