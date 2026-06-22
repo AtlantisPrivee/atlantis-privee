@@ -20,11 +20,11 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#d4af37">
 
-    <!-- ============ OPEN GRAPH (Facebook, LinkedIn, WhatsApp) ============ -->
+    <!-- ============ OPEN GRAPH ============ -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Atlantis Privée">
     <meta property="og:title" content="Atlantis Privée — Premium Personal Injury & Insurance Claims Resource">
-    <meta property="og:description" content="The premier digital resource for personal injury law, insurance claims, and legal guidance in the United States. Expert insights to maximize your settlement.">
+    <meta property="og:description" content="The premier digital resource for personal injury law, insurance claims, and legal guidance in the United States.">
     <meta property="og:url" content="https://atlantisprivee.com/">
     <meta property="og:image" content="https://atlantisprivee.com/apple-touch-icon.png">
     <meta property="og:image:width" content="1200">
@@ -33,7 +33,6 @@
 
     <!-- ============ TWITTER CARDS ============ -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@atlantisprivee">
     <meta name="twitter:title" content="Atlantis Privée — Premium Personal Injury & Insurance Claims Resource">
     <meta name="twitter:description" content="The premier digital resource for personal injury law, insurance claims, and legal guidance in the United States.">
     <meta name="twitter:image" content="https://atlantisprivee.com/apple-touch-icon.png">
@@ -50,18 +49,10 @@
       "url": "https://atlantisprivee.com",
       "logo": "https://atlantisprivee.com/apple-touch-icon.png",
       "description": "The premier digital publication for personal injury law and insurance claims intelligence in the United States.",
-      "email": "contact@atlantisprivee.com",
-      "sameAs": [],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "Editorial",
-        "email": "contact@atlantisprivee.com",
-        "availableLanguage": ["English"]
-      }
+      "email": "contact@atlantisprivee.com"
     }
     </script>
 
-    <!-- ============ SCHEMA.ORG WEBSITE ============ -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -257,7 +248,7 @@
             const sides = articles.slice(1, 3);
 
             grid.innerHTML = `
-                <div class="featured-main" onclick="window.location.href='/article?slug=${main.slug}'">
+                <div class="featured-main" onclick="window.location.href='/articles/${main.slug}'">
                     <img src="${main.image || ''}" alt="${main.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                     <div class="featured-overlay">
                         <span class="category-tag">${main.category}</span>
@@ -271,7 +262,7 @@
                 </div>
                 <div class="featured-side">
                     ${sides.map(a => `
-                        <div class="featured-side-card" onclick="window.location.href='/article?slug=${a.slug}'">
+                        <div class="featured-side-card" onclick="window.location.href='/articles/${a.slug}'">
                             <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                             <div class="overlay">
                                 <span class="category-tag">${a.category}</span>
@@ -304,7 +295,7 @@
                 return;
             }
             grid.innerHTML = articles.map(a => `
-                <article class="article-card" onclick="window.location.href='/article?slug=${a.slug}'">
+                <article class="article-card" onclick="window.location.href='/articles/${a.slug}'">
                     <div class="article-card-image">
                         <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                         <span class="category-tag">${a.category}</span>
