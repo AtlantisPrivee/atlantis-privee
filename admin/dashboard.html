@@ -19,6 +19,7 @@
                 <li><a class="active" onclick="showSection('dashboard', this)">◆ Dashboard</a></li>
                 <li><a onclick="showSection('articles', this)">📝 All Articles</a></li>
                 <li><a onclick="showSection('new', this)">✦ New Article</a></li>
+                <li><a onclick="regenerateAllArticles()" style="cursor:pointer;">🔄 Regenerate All HTMLs</a></li>
                 <li><a href="/" target="_blank">🌐 View Site</a></li>
                 <li><a class="logout" onclick="logout()">⏻ Logout</a></li>
             </ul>
@@ -186,7 +187,7 @@ Write your article in Markdown.
     <div class="modal-overlay" id="deleteModal">
         <div class="modal">
             <h3>Delete Article?</h3>
-            <p>This action cannot be undone. The sitemap will be updated automatically.</p>
+            <p>This action cannot be undone. The static HTML and sitemap will be updated automatically.</p>
             <div class="btn-group">
                 <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
@@ -202,7 +203,6 @@ Write your article in Markdown.
     <div class="toast" id="toast"></div>
 
     <script>
-        // ============ SESSION & GITHUB CONFIG ============
         const github = JSON.parse(localStorage.getItem('atlantis_github') || '{}');
         if (!github.token) window.location.href = '/admin/';
 
@@ -216,7 +216,6 @@ Write your article in Markdown.
         let articlesFileSha = null;
         let deleteTarget = null;
 
-        // ============ HELPER FUNCTIONS ============
         function showLoading(text) {
             document.getElementById('loadingText').textContent = text || 'Saving to GitHub...';
             document.getElementById('loadingOverlay').classList.add('active');
@@ -255,7 +254,6 @@ Write your article in Markdown.
             });
         }
 
-        // ============ GITHUB API FUNCTIONS ============
         async function getArticlesFile() {
             try {
                 const res = await fetch(REPO_API + '/contents/data/articles.json', { headers: HEADERS });
@@ -328,21 +326,344 @@ Write your article in Markdown.
             }
         }
 
-        // ============ AUTO SITEMAP GENERATOR (FORMATO CORRECTO SIN .html) ============
+        // ============ GENERATE STATIC HTML FOR ARTICLE ============
+        function generateArticleHTML(article) {
+            const url = 'https://atlantisprivee.com/articles/' + article.slug;
+            const imageUrl = article.image
+                ? (article.image.startsWith('http') ? article.image : 'https://atlantisprivee.com' + article.image)
+                : 'https://atlantisprivee.com/apple-touch-icon.png';
+            const title = article.metaTitle || article.title;
+            const description = article.metaDescription || article.excerpt;
+            const date = new Date(article.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Parse markdown to HTML
+            const contentHTML = marked.parse(article.content || '');
+
+            // Schema.org Article
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "headline": article.title,
+                "description": description,
+                "image": imageUrl,
+                "datePublished": article.date,
+                "dateModified": article.updatedAt || article.date,
+                "author": {
+                    "@type": "Organization",
+                    "name": article.author || "Atlantis Editorial",
+                    "url": "https://atlantisprivee.com/about.html"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Atlantis Privée",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://atlantisprivee.com/apple-touch-icon.png",
+                        "width": 180,
+                        "height": 180
+                    }
+                },
+                "mainEntityOfPage": {
+                    "@type": "WebPage",
+                    "@id": url
+                },
+                "articleSection": article.category,
+                "inLanguage": "en-US",
+                "isAccessibleForFree": true
+            };
+
+            return `<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>${title} — Atlantis Privée</title>
+    <meta name="description" content="${description}">
+    <meta name="author" content="${article.author}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="${url}">
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#d4af37">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Atlantis Privée">
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:url" content="${url}">
+    <meta property="og:image" content="${imageUrl}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:author" content="${article.author}">
+    <meta property="article:published_time" content="${article.date}">
+    <meta property="article:section" content="${article.category}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${title}">
+    <meta name="twitter:description" content="${description}">
+    <meta name="twitter:image" content="${imageUrl}">
+
+    <link rel="stylesheet" href="/style.css">
+
+    <script type="application/ld+json">
+${JSON.stringify(schema, null, 2)}
+    </${'script'}>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WZ6E1P3SKB"></${'script'}>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-WZ6E1P3SKB');
+    </${'script'}>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-mark">A</span>
+                <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+            </a>
+            <nav class="nav" id="mainNav">
+                <a href="/">Home</a>
+                <a href="/#articles">Articles</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="article-hero">
+        ${article.image ? `<img src="${article.image}" alt="${article.title}">` : '<div style="width:100%;height:100%;background:linear-gradient(135deg, #1a1a1a, #333);"></div>'}
+        <div class="article-hero-overlay">
+            <div class="article-hero-content">
+                <span class="category-tag">${article.category}</span>
+                <h1>${article.title}</h1>
+                <div class="article-hero-meta">
+                    <span>✍️ ${article.author}</span>
+                    <span>📅 ${date}</span>
+                    <span>⏱ ${article.readTime || 5} min read</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="article-body-wrap">
+        <article class="article-body">
+            ${contentHTML}
+            <div class="article-cta-contact">
+                <div class="article-cta-content">
+                    <div class="article-cta-icon">💬</div>
+                    <div class="article-cta-text">
+                        <h3>Have Questions About This Topic?</h3>
+                        <p>Our editorial team is here to help. Reach out with any questions or feedback about this article.</p>
+                    </div>
+                    <a href="/contact.html" class="article-cta-button">Contact Us →</a>
+                </div>
+            </div>
+        </article>
+
+        <aside class="sidebar">
+            <div class="sidebar-widget">
+                <h4>Related Reading</h4>
+                <div id="relatedArticles"><p style="color: var(--text-muted); font-size:0.85rem;">Loading...</p></div>
+            </div>
+
+            <div class="ad-space">
+                📢 Ad Space<br>
+                <small style="font-size:0.75rem; opacity:0.5; margin-top:8px; display:block;">AdSense or affiliate banner</small>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="/" class="logo">
+                    <span class="logo-mark">A</span>
+                    <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+                </a>
+                <p>The premier digital publication for personal injury law and insurance claims intelligence.</p>
+            </div>
+            <div>
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="/">Car Accidents</a></li>
+                    <li><a href="/">Insurance Claims</a></li>
+                    <li><a href="/">Personal Injury</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about.html">About Us</a></li>
+                    <li><a href="/contact.html">Contact Us</a></li>
+                    <li><a href="mailto:contact@atlantisprivee.com">📧 contact@atlantisprivee.com</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Atlantis Privée. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-banner-inner">
+            <div class="cookie-banner-text">
+                <h4>🍪 We Value Your Privacy</h4>
+                <p>We use cookies to enhance your browsing experience. <a href="/cookie-policy.html">Learn more</a></p>
+            </div>
+            <div class="cookie-banner-buttons">
+                <button class="btn-cookie-reject" onclick="rejectCookies()">Reject</button>
+                <button class="btn-cookie-accept" onclick="acceptCookies()">Accept All</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadRelated() {
+            try {
+                const res = await fetch('/data/articles.json?t=' + Date.now());
+                const articles = await res.json();
+                const related = articles.filter(a =>
+                    a.category === '${article.category}' &&
+                    a.slug !== '${article.slug}' &&
+                    a.status === 'published'
+                ).slice(0, 4);
+
+                const c = document.getElementById('relatedArticles');
+                if (related.length === 0) {
+                    c.innerHTML = '<p style="color: var(--text-muted); font-size:0.85rem;">No related articles yet.</p>';
+                    return;
+                }
+                c.innerHTML = related.map(a => \`
+                    <a href="/articles/\${a.slug}" class="sidebar-article" style="cursor:pointer;">
+                        <img src="\${a.image || ''}" alt="\${a.title}" onerror="this.style.background='var(--bg-elevated)'; this.src='';">
+                        <div>
+                            <h5>\${a.title}</h5>
+                            <small>\${new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</small>
+                        </div>
+                    </a>
+                \`).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function toggleNav() { document.getElementById('mainNav').classList.toggle('open'); }
+
+        function showCookieBanner() {
+            if (!localStorage.getItem('cookie_consent')) {
+                setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 1000);
+            }
+        }
+        function acceptCookies() {
+            localStorage.setItem('cookie_consent', 'accepted');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+        function rejectCookies() {
+            localStorage.setItem('cookie_consent', 'rejected');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        loadRelated();
+        showCookieBanner();
+    </${'script'}>
+</body>
+</html>`;
+        }
+
+        // ============ SAVE STATIC HTML FILE ============
+        async function saveArticleHTML(article) {
+            try {
+                const html = generateArticleHTML(article);
+                const path = 'articles/' + article.slug + '.html';
+                const content = btoa(unescape(encodeURIComponent(html)));
+
+                // Check if file exists
+                let sha = null;
+                try {
+                    const res = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS });
+                    if (res.ok) {
+                        const data = await res.json();
+                        sha = data.sha;
+                    }
+                } catch (e) {}
+
+                const body = {
+                    message: 'Generate static HTML for: ' + article.title,
+                    content: content
+                };
+
+                if (sha) body.sha = sha;
+
+                const res = await fetch(REPO_API + '/contents/' + path, {
+                    method: 'PUT',
+                    headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
+                    body: JSON.stringify(body)
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error('HTML generation failed: ' + (err.message || 'unknown'));
+                }
+
+                return true;
+            } catch (err) {
+                console.error('Static HTML error:', err);
+                return false;
+            }
+        }
+
+        // ============ DELETE STATIC HTML ============
+        async function deleteArticleHTML(slug) {
+            try {
+                const path = 'articles/' + slug + '.html';
+                const res = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS });
+                if (!res.ok) return;
+                const data = await res.json();
+
+                await fetch(REPO_API + '/contents/' + path, {
+                    method: 'DELETE',
+                    headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
+                    body: JSON.stringify({ message: 'Delete static HTML: ' + slug, sha: data.sha })
+                });
+            } catch (err) {
+                console.error('Delete HTML error:', err);
+            }
+        }
+
+        // ============ AUTO SITEMAP GENERATOR ============
         async function updateSitemap(articles) {
             try {
                 const today = new Date().toISOString().split('T')[0];
 
-                // Filtrar solo artículos publicados
                 const publishedArticles = articles.filter(function(a) {
                     return a.status === 'published';
                 });
 
-                // Construir XML del sitemap
                 let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
                 sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
 
-                // Homepage (prioridad 1.0)
                 sitemap += '  <!-- HOMEPAGE -->\n';
                 sitemap += '  <url>\n';
                 sitemap += '    <loc>https://atlantisprivee.com/</loc>\n';
@@ -351,7 +672,6 @@ Write your article in Markdown.
                 sitemap += '    <priority>1.0</priority>\n';
                 sitemap += '  </url>\n\n';
 
-                // Artículos publicados (FORMATO CORRECTO SIN .html)
                 if (publishedArticles.length > 0) {
                     sitemap += '  <!-- ARTICLES -->\n';
                     publishedArticles.forEach(function(article) {
@@ -360,7 +680,7 @@ Write your article in Markdown.
                             : (article.date ? article.date.split('T')[0] : today);
 
                         sitemap += '  <url>\n';
-                        sitemap += '    <loc>https://atlantisprivee.com/article?slug=' + article.slug + '</loc>\n';
+                        sitemap += '    <loc>https://atlantisprivee.com/articles/' + article.slug + '</loc>\n';
                         sitemap += '    <lastmod>' + lastmod + '</lastmod>\n';
                         sitemap += '    <changefreq>weekly</changefreq>\n';
                         sitemap += '    <priority>0.9</priority>\n';
@@ -368,29 +688,27 @@ Write your article in Markdown.
                     });
                 }
 
-                // Páginas legales
                 sitemap += '  <!-- LEGAL & COMPANY PAGES -->\n';
                 const legalPages = [
-                    { url: 'about.html', priority: '0.7', freq: 'monthly' },
-                    { url: 'contact.html', priority: '0.6', freq: 'monthly' },
-                    { url: 'privacy-policy.html', priority: '0.4', freq: 'monthly' },
-                    { url: 'terms-of-service.html', priority: '0.4', freq: 'monthly' },
-                    { url: 'disclaimer.html', priority: '0.4', freq: 'monthly' },
-                    { url: 'cookie-policy.html', priority: '0.4', freq: 'monthly' }
+                    { url: 'about.html', priority: '0.7' },
+                    { url: 'contact.html', priority: '0.6' },
+                    { url: 'privacy-policy.html', priority: '0.4' },
+                    { url: 'terms-of-service.html', priority: '0.4' },
+                    { url: 'disclaimer.html', priority: '0.4' },
+                    { url: 'cookie-policy.html', priority: '0.4' }
                 ];
 
                 legalPages.forEach(function(page) {
                     sitemap += '  <url>\n';
                     sitemap += '    <loc>https://atlantisprivee.com/' + page.url + '</loc>\n';
                     sitemap += '    <lastmod>' + today + '</lastmod>\n';
-                    sitemap += '    <changefreq>' + page.freq + '</changefreq>\n';
+                    sitemap += '    <changefreq>monthly</changefreq>\n';
                     sitemap += '    <priority>' + page.priority + '</priority>\n';
                     sitemap += '  </url>\n\n';
                 });
 
                 sitemap += '</urlset>';
 
-                // Obtener SHA actual del sitemap (si existe)
                 let sitemapSha = null;
                 try {
                     const res = await fetch(REPO_API + '/contents/sitemap.xml', { headers: HEADERS });
@@ -398,44 +716,50 @@ Write your article in Markdown.
                         const data = await res.json();
                         sitemapSha = data.sha;
                     }
-                } catch (e) {
-                    // El archivo no existe, lo crearemos
-                }
+                } catch (e) {}
 
-                // Codificar contenido
                 const content = btoa(unescape(encodeURIComponent(sitemap)));
+                const body = { message: 'Auto-update sitemap.xml', content: content };
+                if (sitemapSha) body.sha = sitemapSha;
 
-                // Body para GitHub
-                const body = {
-                    message: 'Auto-update sitemap.xml',
-                    content: content
-                };
-
-                if (sitemapSha) {
-                    body.sha = sitemapSha;
-                }
-
-                // Subir a GitHub
                 const updateRes = await fetch(REPO_API + '/contents/sitemap.xml', {
                     method: 'PUT',
                     headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
                     body: JSON.stringify(body)
                 });
 
-                if (!updateRes.ok) {
-                    const errData = await updateRes.json();
-                    console.error('Sitemap update failed:', errData);
-                    throw new Error('Sitemap update failed: ' + (errData.message || 'unknown'));
-                }
-
-                return true;
+                return updateRes.ok;
             } catch (err) {
                 console.error('Sitemap update error:', err);
                 return false;
             }
         }
 
-        // ============ ARTICLE FUNCTIONS ============
+        // ============ REGENERATE ALL HTMLs ============
+        async function regenerateAllArticles() {
+            if (!confirm('This will regenerate static HTML for all ' + allArticles.filter(a => a.status === 'published').length + ' published articles. Continue?')) return;
+
+            const published = allArticles.filter(a => a.status === 'published');
+            showLoading('Regenerating ' + published.length + ' articles...');
+
+            let success = 0;
+            let failed = 0;
+
+            for (let i = 0; i < published.length; i++) {
+                showLoading('Regenerating ' + (i + 1) + ' of ' + published.length + ': ' + published[i].title.substring(0, 40) + '...');
+                const ok = await saveArticleHTML(published[i]);
+                if (ok) success++;
+                else failed++;
+                await new Promise(r => setTimeout(r, 500));
+            }
+
+            showLoading('Updating sitemap...');
+            await updateSitemap(allArticles);
+
+            hideLoading();
+            showToast('✓ Regenerated ' + success + ' articles' + (failed > 0 ? ' (' + failed + ' failed)' : ''), success > 0 ? 'success' : 'error');
+        }
+
         async function loadArticles() {
             try {
                 allArticles = await getArticlesFile();
@@ -488,7 +812,7 @@ Write your article in Markdown.
             const sc = a.status === 'published' ? 'status-published' : 'status-draft';
             const sl = a.status === 'published' ? 'Published' : 'Draft';
             const viewBtn = a.status === 'published'
-                ? '<a class="btn btn-sm btn-secondary" href="/article?slug=' + a.slug + '" target="_blank">👁️ View</a>'
+                ? '<a class="btn btn-sm btn-secondary" href="/articles/' + a.slug + '" target="_blank">👁️ View</a>'
                 : '';
             return '<tr>' +
                 '<td><strong>' + a.title.substring(0, 50) + (a.title.length > 50 ? '...' : '') + '</strong>' + (a.featured ? '<span class="featured-star">★</span>' : '') + '</td>' +
@@ -523,14 +847,24 @@ Write your article in Markdown.
                 const wordCount = content.split(/\s+/).length;
                 const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
+                let articleToSave;
+                let oldSlug = null;
+
                 if (id) {
-                    // EDITING EXISTING ARTICLE
                     const index = allArticles.findIndex(function(a) { return a.id === id; });
                     if (index !== -1) {
                         const old = allArticles[index];
+                        oldSlug = old.slug;
+                        const newSlug = slugify(title);
+
+                        // If slug changed, delete old HTML file
+                        if (oldSlug !== newSlug) {
+                            await deleteArticleHTML(oldSlug);
+                        }
+
                         allArticles[index] = Object.assign({}, old, {
                             title: title,
-                            slug: slugify(title),
+                            slug: newSlug,
                             content: content,
                             excerpt: document.getElementById('excerpt').value || content.substring(0, 180) + '...',
                             category: document.getElementById('category').value,
@@ -543,10 +877,10 @@ Write your article in Markdown.
                             image: imageUrl || old.image,
                             updatedAt: new Date().toISOString()
                         });
+                        articleToSave = allArticles[index];
                     }
                 } else {
-                    // CREATING NEW ARTICLE
-                    const newArticle = {
+                    articleToSave = {
                         id: generateId(),
                         title: title,
                         slug: slugify(title),
@@ -563,29 +897,25 @@ Write your article in Markdown.
                         date: new Date().toISOString(),
                         updatedAt: new Date().toISOString()
                     };
-                    allArticles.unshift(newArticle);
+                    allArticles.unshift(articleToSave);
                 }
 
-                // Save articles.json
                 showLoading('Publishing to GitHub...');
                 await saveArticlesFile(allArticles);
 
-                // Auto-update sitemap.xml
-                showLoading('🗺️ Updating sitemap automatically...');
-                const sitemapOk = await updateSitemap(allArticles);
+                if (articleToSave.status === 'published') {
+                    showLoading('📄 Generating static HTML...');
+                    await saveArticleHTML(articleToSave);
+                }
+
+                showLoading('🗺️ Updating sitemap...');
+                await updateSitemap(allArticles);
 
                 hideLoading();
                 showToast(id ? '✓ Article updated' : '✓ Article published', 'success');
-
-                if (sitemapOk) {
-                    setTimeout(function() {
-                        showToast('🗺️ Sitemap updated automatically', 'info');
-                    }, 500);
-                }
-
-                setTimeout(function() {
-                    showToast('⏱️ Cloudflare will deploy in ~30s', 'info');
-                }, 1000);
+                setTimeout(function() { showToast('📄 Static HTML generated', 'info'); }, 500);
+                setTimeout(function() { showToast('🗺️ Sitemap updated', 'info'); }, 1000);
+                setTimeout(function() { showToast('⏱️ Cloudflare deploying in ~30s', 'info'); }, 1500);
 
                 showSection('articles', null);
             } catch (err) {
@@ -596,10 +926,7 @@ Write your article in Markdown.
 
         function editArticle(id) {
             const a = allArticles.find(function(x) { return x.id === id; });
-            if (!a) {
-                showToast('Article not found', 'error');
-                return;
-            }
+            if (!a) { showToast('Article not found', 'error'); return; }
 
             document.getElementById('articleId').value = a.id;
             document.getElementById('title').value = a.title;
@@ -615,9 +942,7 @@ Write your article in Markdown.
 
             if (a.image) {
                 document.getElementById('imagePreview').innerHTML =
-                    '<div style="margin-bottom:10px; padding:8px; background:var(--bg-elevated); border-radius:6px; font-size:0.85rem; color:var(--text-muted);">' +
-                    '📷 Current image (upload new only to replace)' +
-                    '</div>' +
+                    '<div style="margin-bottom:10px; padding:8px; background:var(--bg-elevated); border-radius:6px; font-size:0.85rem; color:var(--text-muted);">📷 Current image (upload new only to replace)</div>' +
                     '<img src="' + a.image + '" style="width:100%;display:block;border-radius:6px;">';
             } else {
                 document.getElementById('imagePreview').innerHTML = '';
@@ -627,10 +952,7 @@ Write your article in Markdown.
             document.getElementById('submitBtn').textContent = '💾 Update Article';
 
             showSection('new', null);
-
-            setTimeout(function() {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 100);
+            setTimeout(function() { window.scrollTo({ top: 0, behavior: 'smooth' }); }, 100);
         }
 
         function deleteArticle(id) {
@@ -644,10 +966,10 @@ Write your article in Markdown.
 
             try {
                 showLoading('Deleting article...');
-
                 const article = allArticles.find(function(a) { return a.id === deleteTarget; });
-                if (article && article.image) {
-                    await deleteImage(article.image);
+                if (article) {
+                    if (article.image) await deleteImage(article.image);
+                    await deleteArticleHTML(article.slug);
                 }
 
                 allArticles = allArticles.filter(function(a) { return a.id !== deleteTarget; });
@@ -655,18 +977,11 @@ Write your article in Markdown.
                 showLoading('Updating database...');
                 await saveArticlesFile(allArticles);
 
-                showLoading('🗺️ Updating sitemap automatically...');
-                const sitemapOk = await updateSitemap(allArticles);
+                showLoading('🗺️ Updating sitemap...');
+                await updateSitemap(allArticles);
 
                 hideLoading();
                 showToast('✓ Article deleted', 'success');
-
-                if (sitemapOk) {
-                    setTimeout(function() {
-                        showToast('🗺️ Sitemap updated automatically', 'info');
-                    }, 500);
-                }
-
                 loadArticles();
             } catch (err) {
                 hideLoading();
@@ -683,11 +998,9 @@ Write your article in Markdown.
             const sections = document.querySelectorAll('[id^="sec-"]');
             sections.forEach(function(e) { e.style.display = 'none'; });
             document.getElementById('sec-' + s).style.display = 'block';
-
             const navs = document.querySelectorAll('.admin-nav a');
             navs.forEach(function(a) { a.classList.remove('active'); });
             if (el) el.classList.add('active');
-
             if (s === 'dashboard' || s === 'articles') loadArticles();
             if (s === 'new') resetForm();
         }
@@ -706,9 +1019,7 @@ Write your article in Markdown.
                 const r = new FileReader();
                 r.onload = function(e) {
                     document.getElementById('imagePreview').innerHTML =
-                        '<div style="margin-bottom:10px; padding:8px; background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); border-radius:6px; font-size:0.85rem; color:#4ade80;">' +
-                        '✓ New image selected — will replace current one' +
-                        '</div>' +
+                        '<div style="margin-bottom:10px; padding:8px; background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); border-radius:6px; font-size:0.85rem; color:#4ade80;">✓ New image selected — will replace current one</div>' +
                         '<img src="' + e.target.result + '" style="width:100%;display:block;border-radius:6px;">';
                 };
                 r.readAsDataURL(input.files[0]);
@@ -722,7 +1033,6 @@ Write your article in Markdown.
             }
         }
 
-        // INITIALIZE
         loadArticles();
     </script>
 </body>
