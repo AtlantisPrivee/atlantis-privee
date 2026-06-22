@@ -20,6 +20,7 @@
                 <li><a onclick="showSection('articles', this)">📝 All Articles</a></li>
                 <li><a onclick="showSection('new', this)">✦ New Article</a></li>
                 <li><a onclick="regenerateAllArticles()" style="cursor:pointer;">🔄 Regenerate All HTMLs</a></li>
+                <li><a onclick="regenerateSitemap()" style="cursor:pointer;">🗺️ Regenerate Sitemap</a></li>
                 <li><a href="/" target="_blank">🌐 View Site</a></li>
                 <li><a class="logout" onclick="logout()">⏻ Logout</a></li>
             </ul>
@@ -328,7 +329,7 @@ Write your article in Markdown.
 
         // ============ GENERATE STATIC HTML FOR ARTICLE ============
         function generateArticleHTML(article) {
-            const url = 'https://atlantisprivee.com/articles/' + article.slug;
+            const url = 'https://atlantisprivee.com/articles/' + article.slug + '.html';
             const imageUrl = article.image
                 ? (article.image.startsWith('http') ? article.image : 'https://atlantisprivee.com' + article.image)
                 : 'https://atlantisprivee.com/apple-touch-icon.png';
@@ -336,10 +337,8 @@ Write your article in Markdown.
             const description = article.metaDescription || article.excerpt;
             const date = new Date(article.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-            // Parse markdown to HTML
             const contentHTML = marked.parse(article.content || '');
 
-            // Schema.org Article
             const schema = {
                 "@context": "https://schema.org",
                 "@type": "Article",
@@ -556,7 +555,7 @@ ${JSON.stringify(schema, null, 2)}
                     return;
                 }
                 c.innerHTML = related.map(a => \`
-                    <a href="/articles/\${a.slug}" class="sidebar-article" style="cursor:pointer;">
+                    <a href="/articles/\${a.slug}.html" class="sidebar-article" style="cursor:pointer;">
                         <img src="\${a.image || ''}" alt="\${a.title}" onerror="this.style.background='var(--bg-elevated)'; this.src='';">
                         <div>
                             <h5>\${a.title}</h5>
@@ -592,14 +591,12 @@ ${JSON.stringify(schema, null, 2)}
 </html>`;
         }
 
-        // ============ SAVE STATIC HTML FILE ============
         async function saveArticleHTML(article) {
             try {
                 const html = generateArticleHTML(article);
                 const path = 'articles/' + article.slug + '.html';
                 const content = btoa(unescape(encodeURIComponent(html)));
 
-                // Check if file exists
                 let sha = null;
                 try {
                     const res = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS });
@@ -634,7 +631,6 @@ ${JSON.stringify(schema, null, 2)}
             }
         }
 
-        // ============ DELETE STATIC HTML ============
         async function deleteArticleHTML(slug) {
             try {
                 const path = 'articles/' + slug + '.html';
@@ -652,7 +648,7 @@ ${JSON.stringify(schema, null, 2)}
             }
         }
 
-        // ============ AUTO SITEMAP GENERATOR ============
+        // ============ AUTO SITEMAP GENERATOR (URLs con .html) ============
         async function updateSitemap(articles) {
             try {
                 const today = new Date().toISOString().split('T')[0];
@@ -664,6 +660,7 @@ ${JSON.stringify(schema, null, 2)}
                 let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
                 sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
 
+                // HOMEPAGE
                 sitemap += '  <!-- HOMEPAGE -->\n';
                 sitemap += '  <url>\n';
                 sitemap += '    <loc>https://atlantisprivee.com/</loc>\n';
@@ -672,6 +669,7 @@ ${JSON.stringify(schema, null, 2)}
                 sitemap += '    <priority>1.0</priority>\n';
                 sitemap += '  </url>\n\n';
 
+                // ARTICLES (con .html en la URL)
                 if (publishedArticles.length > 0) {
                     sitemap += '  <!-- ARTICLES -->\n';
                     publishedArticles.forEach(function(article) {
@@ -680,7 +678,7 @@ ${JSON.stringify(schema, null, 2)}
                             : (article.date ? article.date.split('T')[0] : today);
 
                         sitemap += '  <url>\n';
-                        sitemap += '    <loc>https://atlantisprivee.com/articles/' + article.slug + '</loc>\n';
+                        sitemap += '    <loc>https://atlantisprivee.com/articles/' + article.slug + '.html</loc>\n';
                         sitemap += '    <lastmod>' + lastmod + '</lastmod>\n';
                         sitemap += '    <changefreq>weekly</changefreq>\n';
                         sitemap += '    <priority>0.9</priority>\n';
@@ -688,6 +686,7 @@ ${JSON.stringify(schema, null, 2)}
                     });
                 }
 
+                // LEGAL PAGES
                 sitemap += '  <!-- LEGAL & COMPANY PAGES -->\n';
                 const legalPages = [
                     { url: 'about.html', priority: '0.7' },
@@ -735,11 +734,35 @@ ${JSON.stringify(schema, null, 2)}
             }
         }
 
+        // ============ REGENERATE SITEMAP MANUALLY ============
+        async function regenerateSitemap() {
+            if (!confirm('Regenerate sitemap.xml with current articles?\n\nThis will update all URLs to the new format with .html extension.')) return;
+            try {
+                showLoading('🗺️ Regenerating sitemap...');
+                const ok = await updateSitemap(allArticles);
+                hideLoading();
+                if (ok) {
+                    showToast('✓ Sitemap regenerated successfully', 'success');
+                    setTimeout(function() {
+                        showToast('Check: atlantisprivee.com/sitemap.xml', 'info');
+                    }, 500);
+                    setTimeout(function() {
+                        showToast('⏱️ Cloudflare will deploy in ~30s', 'info');
+                    }, 1000);
+                } else {
+                    showToast('Error regenerating sitemap', 'error');
+                }
+            } catch (err) {
+                hideLoading();
+                showToast(err.message || 'Error', 'error');
+            }
+        }
+
         // ============ REGENERATE ALL HTMLs ============
         async function regenerateAllArticles() {
-            if (!confirm('This will regenerate static HTML for all ' + allArticles.filter(a => a.status === 'published').length + ' published articles. Continue?')) return;
-
             const published = allArticles.filter(a => a.status === 'published');
+            if (!confirm('This will regenerate static HTML for all ' + published.length + ' published articles. Continue?')) return;
+
             showLoading('Regenerating ' + published.length + ' articles...');
 
             let success = 0;
@@ -812,7 +835,7 @@ ${JSON.stringify(schema, null, 2)}
             const sc = a.status === 'published' ? 'status-published' : 'status-draft';
             const sl = a.status === 'published' ? 'Published' : 'Draft';
             const viewBtn = a.status === 'published'
-                ? '<a class="btn btn-sm btn-secondary" href="/articles/' + a.slug + '" target="_blank">👁️ View</a>'
+                ? '<a class="btn btn-sm btn-secondary" href="/articles/' + a.slug + '.html" target="_blank">👁️ View</a>'
                 : '';
             return '<tr>' +
                 '<td><strong>' + a.title.substring(0, 50) + (a.title.length > 50 ? '...' : '') + '</strong>' + (a.featured ? '<span class="featured-star">★</span>' : '') + '</td>' +
@@ -857,7 +880,6 @@ ${JSON.stringify(schema, null, 2)}
                         oldSlug = old.slug;
                         const newSlug = slugify(title);
 
-                        // If slug changed, delete old HTML file
                         if (oldSlug !== newSlug) {
                             await deleteArticleHTML(oldSlug);
                         }
