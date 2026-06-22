@@ -234,6 +234,10 @@
             }
         }
 
+        function goToArticle(slug) {
+            window.location.href = '/articles/' + slug + '.html';
+        }
+
         function renderFeatured() {
             const featured = allArticles.filter(a => a.featured);
             const articles = featured.length > 0 ? featured : allArticles.slice(0, 3);
@@ -248,7 +252,7 @@
             const sides = articles.slice(1, 3);
 
             grid.innerHTML = `
-                <div class="featured-main" onclick="window.location.href='/articles/${main.slug}'">
+                <a href="/articles/${main.slug}.html" class="featured-main" style="text-decoration:none;color:inherit;">
                     <img src="${main.image || ''}" alt="${main.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                     <div class="featured-overlay">
                         <span class="category-tag">${main.category}</span>
@@ -259,16 +263,16 @@
                             <span>${main.readTime || 5} min read</span>
                         </div>
                     </div>
-                </div>
+                </a>
                 <div class="featured-side">
                     ${sides.map(a => `
-                        <div class="featured-side-card" onclick="window.location.href='/articles/${a.slug}'">
+                        <a href="/articles/${a.slug}.html" class="featured-side-card" style="text-decoration:none;color:inherit;">
                             <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                             <div class="overlay">
                                 <span class="category-tag">${a.category}</span>
                                 <h3>${a.title}</h3>
                             </div>
-                        </div>
+                        </a>
                     `).join('') || '<div class="ad-space">📢 Advertisement Space</div>'}
                 </div>
             `;
@@ -295,7 +299,7 @@
                 return;
             }
             grid.innerHTML = articles.map(a => `
-                <article class="article-card" onclick="window.location.href='/articles/${a.slug}'">
+                <a href="/articles/${a.slug}.html" class="article-card" style="text-decoration:none;color:inherit;">
                     <div class="article-card-image">
                         <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                         <span class="category-tag">${a.category}</span>
@@ -312,7 +316,7 @@
                             <span class="read-more">Read →</span>
                         </div>
                     </div>
-                </article>
+                </a>
             `).join('');
         }
 
