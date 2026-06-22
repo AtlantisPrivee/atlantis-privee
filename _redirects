@@ -1,0 +1,6 @@
+# Redirect old article URLs to new clean URLs
+/article  /articles/:slug  301
+/article.html  /articles/:slug  301
+
+# Force clean URLs (remove .html extension)
+/articles/:slug.html  /articles/:slug  301
