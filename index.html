@@ -140,7 +140,7 @@
         <div class="section-header">
             <div>
                 <div class="section-tag">Featured</div>
-                <h2 class="section-title">Editor's <span class="italic">Selection</span></h2>
+                <h2 class="section-title" id="sectionTitle">Editor's <span class="italic">Selection</span></h2>
             </div>
         </div>
 
@@ -170,10 +170,10 @@
             <div>
                 <h4>Categories</h4>
                 <ul>
-                    <li><a href="/">Car Accidents</a></li>
-                    <li><a href="/">Insurance Claims</a></li>
-                    <li><a href="/">Personal Injury</a></li>
-                    <li><a href="/">Workers Comp</a></li>
+                    <li><a href="/?category=Car+Accidents#articles">Car Accidents</a></li>
+                    <li><a href="/?category=Insurance+Claims#articles">Insurance Claims</a></li>
+                    <li><a href="/?category=Personal+Injury#articles">Personal Injury</a></li>
+                    <li><a href="/?category=Workers+Compensation#articles">Workers Comp</a></li>
                 </ul>
             </div>
             <div>
@@ -216,6 +216,7 @@
 
     <script>
         let allArticles = [];
+        let currentCategoryFilter = 'all';
 
         async function loadArticles() {
             try {
@@ -225,7 +226,9 @@
                     .sort((a, b) => new Date(b.date) - new Date(a.date));
                 renderFeatured();
                 renderCategories();
-                renderAllArticles(allArticles);
+
+                // Verificar si hay filtro en la URL
+                checkURLCategoryFilter();
             } catch (err) {
                 console.error(err);
                 document.getElementById('featuredGrid').innerHTML = `
@@ -235,6 +238,50 @@
                     </div>
                 `;
             }
+        }
+
+        function checkURLCategoryFilter() {
+            const params = new URLSearchParams(window.location.search);
+            const categoryParam = params.get('category');
+
+            if (categoryParam) {
+                // Buscar la categoría correcta (case insensitive)
+                const cats = [...new Set(allArticles.map(a => a.category))];
+                const matchedCategory = cats.find(c =>
+                    c.toLowerCase() === categoryParam.toLowerCase()
+                );
+
+                if (matchedCategory) {
+                    // Aplicar filtro
+                    currentCategoryFilter = matchedCategory;
+                    const filtered = allArticles.filter(a => a.category === matchedCategory);
+                    renderAllArticles(filtered);
+
+                    // Actualizar título de la sección
+                    document.getElementById('sectionTitle').innerHTML =
+                        `Category: <span class="italic">${matchedCategory}</span>`;
+
+                    // Actualizar botón activo en la barra de categorías
+                    setTimeout(() => {
+                        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.category-btn').forEach(b => {
+                            if (b.textContent.trim() === matchedCategory) {
+                                b.classList.add('active');
+                            }
+                        });
+                    }, 100);
+
+                    // Scroll automático a la sección de artículos
+                    setTimeout(() => {
+                        document.getElementById('articles').scrollIntoView({ behavior: 'smooth' });
+                    }, 300);
+
+                    return;
+                }
+            }
+
+            // Si no hay filtro o no coincide, mostrar todos
+            renderAllArticles(allArticles);
         }
 
         function renderFeatured() {
@@ -287,14 +334,27 @@
         function filterCategory(cat, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            currentCategoryFilter = cat;
+
             const filtered = cat === 'all' ? allArticles : allArticles.filter(a => a.category === cat);
             renderAllArticles(filtered);
+
+            // Actualizar el título de la sección
+            if (cat === 'all') {
+                document.getElementById('sectionTitle').innerHTML = `Editor's <span class="italic">Selection</span>`;
+                // Limpiar URL parameter
+                window.history.replaceState({}, '', '/');
+            } else {
+                document.getElementById('sectionTitle').innerHTML = `Category: <span class="italic">${cat}</span>`;
+                // Actualizar URL sin recargar
+                window.history.replaceState({}, '', `/?category=${encodeURIComponent(cat)}#articles`);
+            }
         }
 
         function renderAllArticles(articles) {
             const grid = document.getElementById('articlesGrid');
             if (articles.length === 0) {
-                grid.innerHTML = '<div class="no-articles" style="grid-column: 1/-1;"><h3>No articles found</h3></div>';
+                grid.innerHTML = '<div class="no-articles" style="grid-column: 1/-1;"><h3>No articles found</h3><p>No articles in this category yet.</p></div>';
                 return;
             }
             grid.innerHTML = articles.map(a => `
