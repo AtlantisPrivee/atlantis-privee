@@ -11,10 +11,7 @@
 <body>
     <div class="admin-layout">
         <aside class="admin-sidebar">
-            <div class="sidebar-logo">
-                ATLANTIS
-                <small>CONTROL</small>
-            </div>
+            <div class="sidebar-logo">ATLANTIS<small>CONTROL</small></div>
             <ul class="admin-nav">
                 <li><a class="active" onclick="showSection('dashboard', this)">◆ Dashboard</a></li>
                 <li><a onclick="showSection('articles', this)">📝 All Articles</a></li>
@@ -25,390 +22,342 @@
                 <li><a class="logout" onclick="logout()">⏻ Logout</a></li>
             </ul>
         </aside>
-
         <main class="admin-main">
             <section id="sec-dashboard">
                 <div class="admin-header">
                     <h2>Editorial <span class="accent">Overview</span></h2>
                     <button class="btn" onclick="showSection('new', null)">✦ New Article</button>
                 </div>
-
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">Total Articles</div>
-                        <div class="stat-value" id="statTotal">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Published</div>
-                        <div class="stat-value" id="statPublished">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Drafts</div>
-                        <div class="stat-value" id="statDrafts">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Featured</div>
-                        <div class="stat-value" id="statFeatured">0</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-label">Total Articles</div><div class="stat-value" id="statTotal">0</div></div>
+                    <div class="stat-card"><div class="stat-label">Published</div><div class="stat-value" id="statPublished">0</div></div>
+                    <div class="stat-card"><div class="stat-label">Drafts</div><div class="stat-value" id="statDrafts">0</div></div>
+                    <div class="stat-card"><div class="stat-label">Featured</div><div class="stat-value" id="statFeatured">0</div></div>
                 </div>
-
                 <div class="admin-card">
-                    <div class="admin-card-header">
-                        <h3>Recent Articles</h3>
-                        <button class="btn btn-sm btn-secondary" onclick="showSection('articles', null)">View All</button>
-                    </div>
-                    <table class="articles-table">
-                        <thead>
-                            <tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr>
-                        </thead>
-                        <tbody id="recentBody"><tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">Loading...</td></tr></tbody>
-                    </table>
+                    <div class="admin-card-header"><h3>Recent Articles</h3><button class="btn btn-sm btn-secondary" onclick="showSection('articles', null)">View All</button></div>
+                    <table class="articles-table"><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="recentBody"><tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">Loading...</td></tr></tbody></table>
                 </div>
             </section>
-
             <section id="sec-articles" style="display:none;">
-                <div class="admin-header">
-                    <h2>All <span class="accent">Articles</span></h2>
-                    <button class="btn" onclick="showSection('new', null)">✦ New Article</button>
-                </div>
-                <div class="admin-card">
-                    <table class="articles-table">
-                        <thead>
-                            <tr><th>Title</th><th>Category</th><th>Author</th><th>Status</th><th>Date</th><th>Actions</th></tr>
-                        </thead>
-                        <tbody id="allBody"><tr><td colspan="6" style="text-align:center;padding:40px;">Loading...</td></tr></tbody>
-                    </table>
-                </div>
+                <div class="admin-header"><h2>All <span class="accent">Articles</span></h2><button class="btn" onclick="showSection('new', null)">✦ New Article</button></div>
+                <div class="admin-card"><table class="articles-table"><thead><tr><th>Title</th><th>Category</th><th>Author</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="allBody"><tr><td colspan="6" style="text-align:center;padding:40px;">Loading...</td></tr></tbody></table></div>
             </section>
-
             <section id="sec-new" style="display:none;">
-                <div class="admin-header">
-                    <h2 id="formTitle">New <span class="accent">Article</span></h2>
-                    <button class="btn btn-secondary btn-sm" onclick="showSection('articles', null)">← Back</button>
-                </div>
-
+                <div class="admin-header"><h2 id="formTitle">New <span class="accent">Article</span></h2><button class="btn btn-secondary btn-sm" onclick="showSection('articles', null)">← Back</button></div>
                 <div class="form-container">
                     <form id="articleForm" onsubmit="saveArticle(event)">
                         <input type="hidden" id="articleId">
-
-                        <div class="form-group">
-                            <label>Title *</label>
-                            <input type="text" id="title" placeholder="e.g. The Hidden Tactics Insurance Companies Use" required>
-                        </div>
-
+                        <div class="form-group"><label>Title *</label><input type="text" id="title" placeholder="Article title" required></div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Category *</label>
-                                <select id="category" required>
-                                    <option value="">Select Category</option>
-                                    <option>Car Accidents</option>
-                                    <option>Insurance Claims</option>
-                                    <option>Personal Injury</option>
-                                    <option>Workers Compensation</option>
-                                    <option>Medical Malpractice</option>
-                                    <option>Truck Accidents</option>
-                                    <option>Slip and Fall</option>
-                                    <option>Wrongful Death</option>
-                                    <option>Insurance Denied</option>
-                                    <option>Legal Guides</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Author</label>
-                                <input type="text" id="author" value="Atlantis Editorial">
-                            </div>
+                            <div class="form-group"><label>Category *</label><select id="category" required><option value="">Select</option><option>Car Accidents</option><option>Insurance Claims</option><option>Personal Injury</option><option>Workers Compensation</option><option>Medical Malpractice</option><option>Truck Accidents</option><option>Slip and Fall</option><option>Wrongful Death</option><option>Insurance Denied</option><option>Legal Guides</option></select></div>
+                            <div class="form-group"><label>Author</label><input type="text" id="author" value="Atlantis Editorial"></div>
                         </div>
-
-                        <div class="form-group">
-                            <label>Excerpt</label>
-                            <input type="text" id="excerpt" placeholder="Brief description (auto-generated if empty)">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Featured Image</label>
-                            <input type="file" id="image" accept="image/*" onchange="previewImage(this)">
-                            <div class="image-preview" id="imagePreview"></div>
-                            <small>Image will be uploaded to your GitHub repo. Leave empty to keep current image when editing.</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Content (Markdown) *</label>
-                            <textarea id="content" required placeholder="## Heading
-
-Write your article in Markdown.
-
-**Bold** and *italic*
-
-- List item 1
-- List item 2
-
-> Important quote"></textarea>
-                            <small>Markdown supported: ## headings, **bold**, *italic*, - lists, > quotes</small>
-                        </div>
-
+                        <div class="form-group"><label>Excerpt</label><input type="text" id="excerpt" placeholder="Brief description"></div>
+                        <div class="form-group"><label>Featured Image</label><input type="file" id="image" accept="image/*" onchange="previewImage(this)"><div class="image-preview" id="imagePreview"></div><small>Leave empty to keep current image when editing.</small></div>
+                        <div class="form-group"><label>Content (Markdown) *</label><textarea id="content" required placeholder="Write in Markdown..."></textarea><small>## headings, **bold**, *italic*, - lists, > quotes</small></div>
                         <h3 class="section-divider">SEO Configuration</h3>
-
-                        <div class="form-group">
-                            <label>Meta Title</label>
-                            <input type="text" id="metaTitle" placeholder="50-60 characters">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Meta Description</label>
-                            <input type="text" id="metaDescription" placeholder="150-160 characters">
-                        </div>
-
+                        <div class="form-group"><label>Meta Title</label><input type="text" id="metaTitle" placeholder="50-60 characters"></div>
+                        <div class="form-group"><label>Meta Description</label><input type="text" id="metaDescription" placeholder="150-160 characters"></div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select id="status">
-                                    <option value="draft">📝 Draft</option>
-                                    <option value="published">✅ Published</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>&nbsp;</label>
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="featured">
-                                    <label for="featured">★ FEATURE ON HOMEPAGE</label>
-                                </div>
-                            </div>
+                            <div class="form-group"><label>Status</label><select id="status"><option value="draft">📝 Draft</option><option value="published">✅ Published</option></select></div>
+                            <div class="form-group"><label>&nbsp;</label><div class="checkbox-group"><input type="checkbox" id="featured"><label for="featured">★ FEATURE ON HOMEPAGE</label></div></div>
                         </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn" id="submitBtn">📤 Publish Article</button>
-                            <button type="button" class="btn btn-secondary" onclick="showSection('articles', null)">Cancel</button>
-                        </div>
+                        <div class="form-actions"><button type="submit" class="btn" id="submitBtn">📤 Publish Article</button><button type="button" class="btn btn-secondary" onclick="showSection('articles', null)">Cancel</button></div>
                     </form>
                 </div>
             </section>
         </main>
     </div>
-
-    <div class="modal-overlay" id="deleteModal">
-        <div class="modal">
-            <h3>Delete Article?</h3>
-            <p>This action cannot be undone. The static HTML and sitemap will be updated automatically.</p>
-            <div class="btn-group">
-                <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <p id="loadingText">Saving to GitHub...</p>
-    </div>
-
+    <div class="modal-overlay" id="deleteModal"><div class="modal"><h3>Delete Article?</h3><p>This action cannot be undone.</p><div class="btn-group"><button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button><button class="btn btn-secondary" onclick="closeModal()">Cancel</button></div></div></div>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p id="loadingText">Saving...</p></div>
     <div class="toast" id="toast"></div>
-
     <script>
-        const github = JSON.parse(localStorage.getItem('atlantis_github') || '{}');
+        var github = JSON.parse(localStorage.getItem('atlantis_github') || '{}');
         if (!github.token) window.location.href = '/admin/';
+        var REPO_API = 'https://api.github.com/repos/' + github.username + '/' + github.repo;
+        var HEADERS = {'Authorization': 'Bearer ' + github.token, 'Accept': 'application/vnd.github.v3+json'};
+        var allArticles = [];
+        var articlesFileSha = null;
+        var deleteTarget = null;
 
-        const REPO_API = 'https://api.github.com/repos/' + github.username + '/' + github.repo;
-        const HEADERS = {
-            'Authorization': 'Bearer ' + github.token,
-            'Accept': 'application/vnd.github.v3+json'
-        };
-
-        let allArticles = [];
-        let articlesFileSha = null;
-        let deleteTarget = null;
-
-        function showLoading(text) {
-            document.getElementById('loadingText').textContent = text || 'Saving to GitHub...';
-            document.getElementById('loadingOverlay').classList.add('active');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.remove('active');
-        }
-
-        function showToast(msg, type) {
-            type = type || 'success';
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = 'toast ' + type + ' show';
-            setTimeout(function() { t.classList.remove('show'); }, 4000);
-        }
-
-        function slugify(text) {
-            return text.toLowerCase()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim();
-        }
-
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-        }
-
-        function fileToBase64(file) {
-            return new Promise(function(resolve, reject) {
-                const reader = new FileReader();
-                reader.onload = function() { resolve(reader.result.split(',')[1]); };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
+        function showLoading(t) { document.getElementById('loadingText').textContent = t || 'Saving...'; document.getElementById('loadingOverlay').classList.add('active'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
+        function showToast(m, t) { t = t || 'success'; var e = document.getElementById('toast'); e.textContent = m; e.className = 'toast ' + t + ' show'; setTimeout(function() { e.classList.remove('show'); }, 4000); }
+        function slugify(t) { return t.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim(); }
+        function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 5); }
+        function fileToBase64(f) { return new Promise(function(r, j) { var d = new FileReader(); d.onload = function() { r(d.result.split(',')[1]); }; d.onerror = j; d.readAsDataURL(f); }); }
 
         async function getArticlesFile() {
             try {
-                const res = await fetch(REPO_API + '/contents/data/articles.json', { headers: HEADERS });
-                if (!res.ok) throw new Error('Cannot fetch articles');
-                const data = await res.json();
+                var res = await fetch(REPO_API + '/contents/data/articles.json', { headers: HEADERS });
+                if (!res.ok) throw new Error('Cannot fetch');
+                var data = await res.json();
                 articlesFileSha = data.sha;
-                const content = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+                var content = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
                 return JSON.parse(content);
-            } catch (err) {
-                console.error(err);
-                return [];
-            }
+            } catch (e) { console.error(e); return []; }
         }
 
         async function saveArticlesFile(articles) {
-            const content = btoa(unescape(encodeURIComponent(JSON.stringify(articles, null, 2))));
-            const body = {
-                message: 'Update articles - ' + new Date().toISOString(),
-                content: content,
-                sha: articlesFileSha
-            };
-            const res = await fetch(REPO_API + '/contents/data/articles.json', {
-                method: 'PUT',
-                headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
-                body: JSON.stringify(body)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || 'Failed to save');
-            }
-            const data = await res.json();
+            var content = btoa(unescape(encodeURIComponent(JSON.stringify(articles, null, 2))));
+            var body = { message: 'Update articles', content: content, sha: articlesFileSha };
+            var res = await fetch(REPO_API + '/contents/data/articles.json', { method: 'PUT', headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }), body: JSON.stringify(body) });
+            if (!res.ok) { var err = await res.json(); throw new Error(err.message || 'Failed'); }
+            var data = await res.json();
             articlesFileSha = data.content.sha;
-            return data;
         }
 
         async function uploadImage(file) {
-            const base64 = await fileToBase64(file);
-            const filename = Date.now() + '-' + file.name.replace(/\s/g, '-');
-            const path = 'uploads/' + filename;
-            const body = {
-                message: 'Upload image: ' + filename,
-                content: base64
-            };
-            const res = await fetch(REPO_API + '/contents/' + path, {
-                method: 'PUT',
-                headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
-                body: JSON.stringify(body)
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.message || 'Image upload failed');
-            }
+            var base64 = await fileToBase64(file);
+            var filename = Date.now() + '-' + file.name.replace(/\s/g, '-');
+            var path = 'uploads/' + filename;
+            var res = await fetch(REPO_API + '/contents/' + path, { method: 'PUT', headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }), body: JSON.stringify({ message: 'Upload: ' + filename, content: base64 }) });
+            if (!res.ok) throw new Error('Upload failed');
             return '/' + path;
         }
 
-        async function deleteImage(imagePath) {
-            if (!imagePath || !imagePath.startsWith('/uploads/')) return;
+        async function deleteImage(p) {
+            if (!p || !p.startsWith('/uploads/')) return;
             try {
-                const path = imagePath.substring(1);
-                const res = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS });
+                var path = p.substring(1);
+                var res = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS });
                 if (!res.ok) return;
-                const data = await res.json();
-                await fetch(REPO_API + '/contents/' + path, {
-                    method: 'DELETE',
-                    headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }),
-                    body: JSON.stringify({ message: 'Delete image: ' + path, sha: data.sha })
+                var data = await res.json();
+                await fetch(REPO_API + '/contents/' + path, { method: 'DELETE', headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }), body: JSON.stringify({ message: 'Delete: ' + path, sha: data.sha }) });
+            } catch (e) { console.error(e); }
+        }
+        
+        function generateArticleHTML(a) {
+            var url = 'https://atlantisprivee.com/articles/' + a.slug + '.html';
+            var img = a.image ? (a.image.startsWith('http') ? a.image : 'https://atlantisprivee.com' + a.image) : 'https://atlantisprivee.com/apple-touch-icon.png';
+            var t = a.metaTitle || a.title;
+            var d = a.metaDescription || a.excerpt;
+            var dt = new Date(a.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            var html = marked.parse(a.content || '');
+            var schema = JSON.stringify({"@context":"https://schema.org","@type":"Article","headline":a.title,"description":d,"image":img,"datePublished":a.date,"dateModified":a.updatedAt||a.date,"author":{"@type":"Organization","name":a.author||"Atlantis Editorial","url":"https://atlantisprivee.com/about.html"},"publisher":{"@type":"Organization","name":"Atlantis Privée","logo":{"@type":"ImageObject","url":"https://atlantisprivee.com/apple-touch-icon.png","width":180,"height":180}},"mainEntityOfPage":{"@type":"WebPage","@id":url},"articleSection":a.category,"inLanguage":"en-US","isAccessibleForFree":true}, null, 2);
+
+            return '<!DOCTYPE html>\n<html lang="en-US">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + t + ' — Atlantis Privée</title>\n<meta name="description" content="' + d + '">\n<meta name="author" content="' + a.author + '">\n<meta name="robots" content="index, follow">\n<link rel="canonical" href="' + url + '">\n<link rel="icon" type="image/x-icon" href="/favicon.ico">\n<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">\n<meta name="theme-color" content="#d4af37">\n<meta property="og:type" content="article">\n<meta property="og:site_name" content="Atlantis Privée">\n<meta property="og:title" content="' + t + '">\n<meta property="og:description" content="' + d + '">\n<meta property="og:url" content="' + url + '">\n<meta property="og:image" content="' + img + '">\n<meta property="og:locale" content="en_US">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="' + t + '">\n<meta name="twitter:description" content="' + d + '">\n<meta name="twitter:image" content="' + img + '">\n<link rel="stylesheet" href="/style.css">\n<script type="application/ld+json">\n' + schema + '\n</script>\n<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9409482583298204" crossorigin="anonymous"></script>\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-WZ6E1P3SKB"></script>\n<script>\nwindow.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag("js", new Date());\ngtag("config", "G-WZ6E1P3SKB");\n</script>\n</head>\n<body>\n<header class="header"><div class="header-inner"><a href="/" class="logo"><span class="logo-mark">A</span><span class="logo-text">ATLANTIS<small>PRIVÉE</small></span></a><nav class="nav" id="mainNav"><a href="/">Home</a><a href="/#articles">Articles</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav><div class="header-actions"><button class="mobile-toggle" onclick="document.getElementById(\'mainNav\').classList.toggle(\'open\')">☰</button></div></div></header>\n<section class="article-hero">' + (a.image ? '<img src="' + a.image + '" alt="' + a.title + '">' : '<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a,#333);"></div>') + '<div class="article-hero-overlay"><div class="article-hero-content"><span class="category-tag">' + a.category + '</span><h1>' + a.title + '</h1><div class="article-hero-meta"><span>✍️ ' + a.author + '</span><span>📅 ' + dt + '</span><span>⏱ ' + (a.readTime || 5) + ' min read</span></div></div></div></section>\n<div class="article-body-wrap"><article class="article-body">' + html + '<div class="article-cta-contact"><div class="article-cta-content"><div class="article-cta-icon">💬</div><div class="article-cta-text"><h3>Have Questions About This Topic?</h3><p>Our editorial team is here to help.</p></div><a href="/contact.html" class="article-cta-button">Contact Us →</a></div></div></article><aside class="sidebar"><div class="sidebar-widget"><h4>Related Reading</h4><div id="relatedArticles"><p style="color:var(--text-muted);font-size:0.85rem;">Loading...</p></div></div><div class="ad-space">📢 Ad Space<br><small style="font-size:0.75rem;opacity:0.5;margin-top:8px;display:block;">AdSense banner</small></div></aside></div>\n<footer class="footer"><div class="footer-inner"><div class="footer-brand"><a href="/" class="logo"><span class="logo-mark">A</span><span class="logo-text">ATLANTIS<small>PRIVÉE</small></span></a><p>The premier digital publication for personal injury law and insurance claims intelligence.</p></div><div><h4>Company</h4><ul><li><a href="/about.html">About Us</a></li><li><a href="/contact.html">Contact Us</a></li><li><a href="mailto:contact@atlantisprivee.com">📧 contact@atlantisprivee.com</a></li></ul></div><div><h4>Legal</h4><ul><li><a href="/privacy-policy.html">Privacy Policy</a></li><li><a href="/terms-of-service.html">Terms of Service</a></li><li><a href="/disclaimer.html">Disclaimer</a></li><li><a href="/cookie-policy.html">Cookie Policy</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 Atlantis Privée. All rights reserved.</p></div></footer>\n<div class="cookie-banner" id="cookieBanner"><div class="cookie-banner-inner"><div class="cookie-banner-text"><h4>🍪 We Value Your Privacy</h4><p>We use cookies to enhance your experience. <a href="/cookie-policy.html">Learn more</a></p></div><div class="cookie-banner-buttons"><button class="btn-cookie-reject" onclick="localStorage.setItem(\'cookie_consent\',\'rejected\');document.getElementById(\'cookieBanner\').classList.remove(\'show\')">Reject</button><button class="btn-cookie-accept" onclick="localStorage.setItem(\'cookie_consent\',\'accepted\');document.getElementById(\'cookieBanner\').classList.remove(\'show\')">Accept All</button></div></div></div>\n<script>\nasync function loadRelated(){try{var r=await fetch("/data/articles.json?t="+Date.now());var a=await r.json();var rel=a.filter(function(x){return x.category==="' + a.category + '"&&x.slug!=="' + a.slug + '"&&x.status==="published"}).slice(0,4);var c=document.getElementById("relatedArticles");if(rel.length===0){c.innerHTML="<p style=\\"color:var(--text-muted);font-size:0.85rem;\\">No related articles yet.</p>";return;}c.innerHTML=rel.map(function(x){return "<a href=\\"/articles/"+x.slug+".html\\" class=\\"sidebar-article\\" style=\\"cursor:pointer;\\"><img src=\\""+( x.image||"")+"\\" alt=\\""+x.title+"\\" onerror=\\"this.style.background=\'var(--bg-elevated)\';this.src=\'\';\\"><div><h5>"+x.title+"</h5><small>"+new Date(x.date).toLocaleDateString("en-US",{month:"short",day:"numeric"})+"</small></div></a>";}).join("");}catch(e){console.error(e);}}\nif(!localStorage.getItem("cookie_consent")){setTimeout(function(){document.getElementById("cookieBanner").classList.add("show");},1000);}\nloadRelated();\n</script>\n</body>\n</html>';
+        }
+
+        async function saveArticleHTML(a) {
+            try {
+                var html = generateArticleHTML(a);
+                var path = 'articles/' + a.slug + '.html';
+                var content = btoa(unescape(encodeURIComponent(html)));
+                var sha = null;
+                try { var r = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS }); if (r.ok) { var d = await r.json(); sha = d.sha; } } catch (e) {}
+                var body = { message: 'Generate: ' + a.title, content: content };
+                if (sha) body.sha = sha;
+                var res = await fetch(REPO_API + '/contents/' + path, { method: 'PUT', headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }), body: JSON.stringify(body) });
+                return res.ok;
+            } catch (e) { console.error(e); return false; }
+        }
+
+        async function deleteArticleHTML(slug) {
+            try {
+                var path = 'articles/' + slug + '.html';
+                var r = await fetch(REPO_API + '/contents/' + path, { headers: HEADERS });
+                if (!r.ok) return;
+                var d = await r.json();
+                await fetch(REPO_API + '/contents/' + path, { method: 'DELETE', headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }), body: JSON.stringify({ message: 'Delete: ' + slug, sha: d.sha }) });
+            } catch (e) { console.error(e); }
+        }
+
+        async function updateSitemap(articles) {
+            try {
+                var today = new Date().toISOString().split('T')[0];
+                var pub = articles.filter(function(a) { return a.status === 'published'; });
+                var s = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n  <url>\n    <loc>https://atlantisprivee.com/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n\n';
+                pub.forEach(function(a) {
+                    var lm = a.updatedAt ? a.updatedAt.split('T')[0] : (a.date ? a.date.split('T')[0] : today);
+                    s += '  <url>\n    <loc>https://atlantisprivee.com/articles/' + a.slug + '.html</loc>\n    <lastmod>' + lm + '</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n\n';
                 });
-            } catch (err) {
-                console.error('Delete image error:', err);
+                var pages = ['about.html','contact.html','privacy-policy.html','terms-of-service.html','disclaimer.html','cookie-policy.html'];
+                pages.forEach(function(p) { s += '  <url>\n    <loc>https://atlantisprivee.com/' + p + '</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.4</priority>\n  </url>\n\n'; });
+                s += '</urlset>';
+                var sha = null;
+                try { var r = await fetch(REPO_API + '/contents/sitemap.xml', { headers: HEADERS }); if (r.ok) { var d = await r.json(); sha = d.sha; } } catch (e) {}
+                var content = btoa(unescape(encodeURIComponent(s)));
+                var body = { message: 'Auto-update sitemap', content: content };
+                if (sha) body.sha = sha;
+                var res = await fetch(REPO_API + '/contents/sitemap.xml', { method: 'PUT', headers: Object.assign({}, HEADERS, { 'Content-Type': 'application/json' }), body: JSON.stringify(body) });
+                return res.ok;
+            } catch (e) { console.error(e); return false; }
+        }
+
+        async function regenerateSitemap() {
+            if (!confirm('Regenerate sitemap?')) return;
+            showLoading('Regenerating sitemap...');
+            var ok = await updateSitemap(allArticles);
+            hideLoading();
+            showToast(ok ? '✓ Sitemap regenerated' : 'Error', ok ? 'success' : 'error');
+        }
+
+        async function regenerateAllArticles() {
+            var pub = allArticles.filter(function(a) { return a.status === 'published'; });
+            if (!confirm('Regenerate ' + pub.length + ' articles with AdSense?')) return;
+            showLoading('Starting...');
+            var ok = 0, fail = 0;
+            for (var i = 0; i < pub.length; i++) {
+                showLoading('Regenerating ' + (i + 1) + '/' + pub.length + ': ' + pub[i].title.substring(0, 35) + '...');
+                if (await saveArticleHTML(pub[i])) ok++; else fail++;
+                await new Promise(function(r) { setTimeout(r, 500); });
+            }
+            showLoading('Updating sitemap...');
+            await updateSitemap(allArticles);
+            hideLoading();
+            showToast('✓ Regenerated ' + ok + ' articles' + (fail > 0 ? ' (' + fail + ' failed)' : ''), 'success');
+        }
+
+        async function loadArticles() {
+            try {
+                allArticles = await getArticlesFile();
+                allArticles.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+                renderDashboard();
+                renderAll();
+            } catch (e) { showToast('Error loading', 'error'); }
+        }
+
+        function renderDashboard() {
+            var pub = allArticles.filter(function(a) { return a.status === 'published'; });
+            var drafts = allArticles.filter(function(a) { return a.status === 'draft'; });
+            var feat = allArticles.filter(function(a) { return a.featured; });
+            document.getElementById('statTotal').textContent = allArticles.length;
+            document.getElementById('statPublished').textContent = pub.length;
+            document.getElementById('statDrafts').textContent = drafts.length;
+            document.getElementById('statFeatured').textContent = feat.length;
+            document.getElementById('recentBody').innerHTML = allArticles.length === 0 ? '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">No articles yet.</td></tr>' : allArticles.slice(0, 5).map(row).join('');
+        }
+
+        function renderAll() {
+            document.getElementById('allBody').innerHTML = allArticles.length === 0 ? '<tr><td colspan="6" style="text-align:center;padding:40px;">No articles.</td></tr>' : allArticles.map(rowFull).join('');
+        }
+
+        function row(a) {
+            var dt = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            var sc = a.status === 'published' ? 'status-published' : 'status-draft';
+            var sl = a.status === 'published' ? 'Published' : 'Draft';
+            return '<tr><td><strong>' + a.title.substring(0, 50) + (a.title.length > 50 ? '...' : '') + '</strong>' + (a.featured ? '<span class="featured-star">★</span>' : '') + '</td><td>' + a.category + '</td><td><span class="status-badge ' + sc + '">' + sl + '</span></td><td>' + dt + '</td><td><div class="btn-group"><button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">✏️ Edit</button><button class="btn btn-sm btn-danger" onclick="deleteArticle(\'' + a.id + '\')">×</button></div></td></tr>';
+        }
+
+        function rowFull(a) {
+            var dt = new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            var sc = a.status === 'published' ? 'status-published' : 'status-draft';
+            var sl = a.status === 'published' ? 'Published' : 'Draft';
+            var v = a.status === 'published' ? '<a class="btn btn-sm btn-secondary" href="/articles/' + a.slug + '.html" target="_blank">👁️</a>' : '';
+            return '<tr><td><strong>' + a.title.substring(0, 50) + (a.title.length > 50 ? '...' : '') + '</strong>' + (a.featured ? '<span class="featured-star">★</span>' : '') + '</td><td>' + a.category + '</td><td>' + a.author + '</td><td><span class="status-badge ' + sc + '">' + sl + '</span></td><td>' + dt + '</td><td><div class="btn-group"><button class="btn btn-sm" onclick="editArticle(\'' + a.id + '\')">✏️ Edit</button>' + v + '<button class="btn btn-sm btn-danger" onclick="deleteArticle(\'' + a.id + '\')">×</button></div></td></tr>';
+        }
+
+        async function saveArticle(e) {
+            e.preventDefault();
+            var id = document.getElementById('articleId').value;
+            var title = document.getElementById('title').value;
+            var content = document.getElementById('content').value;
+            var imageFile = document.getElementById('image').files[0];
+            try {
+                showLoading('Saving...');
+                var imageUrl = null;
+                if (imageFile) { showLoading('Uploading image...'); imageUrl = await uploadImage(imageFile); }
+                var wc = content.split(/\s+/).length;
+                var rt = Math.max(1, Math.ceil(wc / 200));
+                var articleToSave;
+                if (id) {
+                    var idx = allArticles.findIndex(function(a) { return a.id === id; });
+                    if (idx !== -1) {
+                        var old = allArticles[idx];
+                        var ns = slugify(title);
+                        if (old.slug !== ns) await deleteArticleHTML(old.slug);
+                        allArticles[idx] = Object.assign({}, old, { title: title, slug: ns, content: content, excerpt: document.getElementById('excerpt').value || content.substring(0, 180) + '...', category: document.getElementById('category').value, author: document.getElementById('author').value, status: document.getElementById('status').value, featured: document.getElementById('featured').checked, metaTitle: document.getElementById('metaTitle').value || title, metaDescription: document.getElementById('metaDescription').value || '', readTime: rt, image: imageUrl || old.image, updatedAt: new Date().toISOString() });
+                        articleToSave = allArticles[idx];
+                    }
+                } else {
+                    articleToSave = { id: generateId(), title: title, slug: slugify(title), content: content, excerpt: document.getElementById('excerpt').value || content.substring(0, 180) + '...', category: document.getElementById('category').value, author: document.getElementById('author').value, status: document.getElementById('status').value, featured: document.getElementById('featured').checked, metaTitle: document.getElementById('metaTitle').value || title, metaDescription: document.getElementById('metaDescription').value || '', readTime: rt, image: imageUrl, date: new Date().toISOString(), updatedAt: new Date().toISOString() };
+                    allArticles.unshift(articleToSave);
+                }
+                showLoading('Publishing...');
+                await saveArticlesFile(allArticles);
+                if (articleToSave.status === 'published') { showLoading('Generating HTML with AdSense...'); await saveArticleHTML(articleToSave); }
+                showLoading('Updating sitemap...');
+                await updateSitemap(allArticles);
+                hideLoading();
+                showToast(id ? '✓ Updated' : '✓ Published', 'success');
+                setTimeout(function() { showToast('📄 HTML + AdSense generated', 'info'); }, 500);
+                setTimeout(function() { showToast('🗺️ Sitemap updated', 'info'); }, 1000);
+                showSection('articles', null);
+            } catch (err) { hideLoading(); showToast(err.message || 'Error', 'error'); }
+        }
+
+        function editArticle(id) {
+            var a = allArticles.find(function(x) { return x.id === id; });
+            if (!a) return;
+            document.getElementById('articleId').value = a.id;
+            document.getElementById('title').value = a.title;
+            document.getElementById('content').value = a.content;
+            document.getElementById('excerpt').value = a.excerpt || '';
+            document.getElementById('category').value = a.category;
+            document.getElementById('author').value = a.author;
+            document.getElementById('status').value = a.status;
+            document.getElementById('metaTitle').value = a.metaTitle || '';
+            document.getElementById('metaDescription').value = a.metaDescription || '';
+            document.getElementById('featured').checked = !!a.featured;
+            document.getElementById('image').value = '';
+            document.getElementById('imagePreview').innerHTML = a.image ? '<div style="margin-bottom:10px;padding:8px;background:var(--bg-elevated);border-radius:6px;font-size:0.85rem;color:var(--text-muted);">📷 Current image</div><img src="' + a.image + '" style="width:100%;display:block;border-radius:6px;">' : '';
+            document.getElementById('formTitle').innerHTML = 'Edit <span class="accent">Article</span>';
+            document.getElementById('submitBtn').textContent = '💾 Update Article';
+            showSection('new', null);
+            setTimeout(function() { window.scrollTo({ top: 0, behavior: 'smooth' }); }, 100);
+        }
+
+        function deleteArticle(id) { deleteTarget = id; document.getElementById('deleteModal').classList.add('active'); }
+
+        async function confirmDelete() {
+            if (!deleteTarget) return;
+            closeModal();
+            try {
+                showLoading('Deleting...');
+                var a = allArticles.find(function(x) { return x.id === deleteTarget; });
+                if (a) { if (a.image) await deleteImage(a.image); await deleteArticleHTML(a.slug); }
+                allArticles = allArticles.filter(function(x) { return x.id !== deleteTarget; });
+                await saveArticlesFile(allArticles);
+                await updateSitemap(allArticles);
+                hideLoading();
+                showToast('✓ Deleted', 'success');
+                loadArticles();
+            } catch (e) { hideLoading(); showToast(e.message || 'Error', 'error'); }
+        }
+
+        function closeModal() { document.getElementById('deleteModal').classList.remove('active'); deleteTarget = null; }
+
+        function showSection(s, el) {
+            document.querySelectorAll('[id^="sec-"]').forEach(function(e) { e.style.display = 'none'; });
+            document.getElementById('sec-' + s).style.display = 'block';
+            document.querySelectorAll('.admin-nav a').forEach(function(a) { a.classList.remove('active'); });
+            if (el) el.classList.add('active');
+            if (s === 'dashboard' || s === 'articles') loadArticles();
+            if (s === 'new') resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('articleForm').reset();
+            document.getElementById('articleId').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('author').value = 'Atlantis Editorial';
+            document.getElementById('formTitle').innerHTML = 'New <span class="accent">Article</span>';
+            document.getElementById('submitBtn').textContent = '📤 Publish Article';
+        }
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var r = new FileReader();
+                r.onload = function(e) { document.getElementById('imagePreview').innerHTML = '<div style="margin-bottom:10px;padding:8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:6px;font-size:0.85rem;color:#4ade80;">✓ New image selected</div><img src="' + e.target.result + '" style="width:100%;display:block;border-radius:6px;">'; };
+                r.readAsDataURL(input.files[0]);
             }
         }
 
-        // ============ GENERATE STATIC HTML FOR ARTICLE (WITH ADSENSE) ============
-        function generateArticleHTML(article) {
-            const url = 'https://atlantisprivee.com/articles/' + article.slug + '.html';
-            const imageUrl = article.image
-                ? (article.image.startsWith('http') ? article.image : 'https://atlantisprivee.com' + article.image)
-                : 'https://atlantisprivee.com/apple-touch-icon.png';
-            const title = article.metaTitle || article.title;
-            const description = article.metaDescription || article.excerpt;
-            const date = new Date(article.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        function logout() { if (confirm('Sign out?')) { localStorage.removeItem('atlantis_github'); window.location.href = '/admin/'; } }
 
-            const contentHTML = marked.parse(article.content || '');
-
-            const schema = {
-                "@context": "https://schema.org",
-                "@type": "Article",
-                "headline": article.title,
-                "description": description,
-                "image": imageUrl,
-                "datePublished": article.date,
-                "dateModified": article.updatedAt || article.date,
-                "author": {
-                    "@type": "Organization",
-                    "name": article.author || "Atlantis Editorial",
-                    "url": "https://atlantisprivee.com/about.html"
-                },
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "Atlantis Privée",
-                    "logo": {
-                        "@type": "ImageObject",
-                        "url": "https://atlantisprivee.com/apple-touch-icon.png",
-                        "width": 180,
-                        "height": 180
-                    }
-                },
-                "mainEntityOfPage": {
-                    "@type": "WebPage",
-                    "@id": url
-                },
-                "articleSection": article.category,
-                "inLanguage": "en-US",
-                "isAccessibleForFree": true
-            };
-
-            return `<!DOCTYPE html>
-<html lang="en-US">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>${title} — Atlantis Privée</title>
-    <meta name="description" content="${description}">
-    <meta name="author" content="${article.author}">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="${url}">
-
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <meta name="theme-color" content="#d4af37">
-
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="Atlantis Privée">
-    <meta property="og:title" content="${title}">
-    <meta property="og:description" content="${description}">
-    <meta property="og:url" content="${url}">
-    <meta property="og:image" content="${imageUrl}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="en_US">
-    <meta property="article:author" content="${article.author}">
-    <meta property="article:published_time" content="${article.date}">
-    <meta property="article:section" content="${article.category}">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${title}">
-    <meta name="twitter:description" content="${description}">
-    <meta name="twitter:image" content="${imageUrl}">
-
-    <link rel="stylesheet" href="/style.css">
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=
+        loadArticles();
+    </script>
+</body>
+</html>
