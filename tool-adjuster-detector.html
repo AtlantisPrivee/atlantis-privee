@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Adjuster Tactic Detector — Atlantis Privée</title>
+    <meta name="description" content="Did your insurance adjuster say this? Select the phrases you've heard and our tool will detect their hidden tactics and generate your exact response script.">
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6043005595391779" crossorigin="anonymous"></script>
+
+    <style>
+        /* Estilos específicos para la herramienta */
+        .tool-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+        
+        .phrase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .phrase-checkbox {
+            display: none;
+        }
+
+        .phrase-label {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .phrase-label:hover {
+            border-color: var(--accent);
+        }
+
+        .phrase-checkbox:checked + .phrase-label {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .phrase-checkbox:checked + .phrase-label::before {
+            content: '✓';
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .phrase-label::before {
+            content: '+';
+            margin-right: 10px;
+            color: var(--text-muted);
+        }
+
+        .analysis-result {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .threat-meter {
+            height: 25px;
+            background: var(--bg-primary);
+            border-radius: 50px;
+            margin: 20px 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .threat-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4ade80, #f4cf5a, #f87171);
+            transition: width 1s ease-out;
+        }
+
+        .script-box {
+            background: #1a1a1a;
+            border-left: 4px solid var(--accent);
+            padding: 25px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+            font-family: 'Monaco', monospace;
+            color: #fff;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-mark">A</span>
+                <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+            </a>
+            <nav class="nav" id="mainNav">
+                <a href="/">Home</a>
+                <a href="/#articles">Articles</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button class="mobile-toggle" onclick="document.getElementById('mainNav').classList.toggle('open')">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="legal-hero">
+        <div class="legal-hero-content">
+            <div class="legal-hero-icon">🕵️‍♂️</div>
+            <h1>Adjuster Tactic <span class="accent">Detector</span></h1>
+            <p class="legal-hero-subtitle">Select the phrases your insurance adjuster has used on the phone or in emails. Our AI tool will decode their hidden strategy and generate the perfect response script.</p>
+        </div>
+    </section>
+
+    <main class="legal-page">
+        <div class="legal-container">
+            
+            <div class="tool-container">
+                <h2 style="margin-top:0; font-family:var(--font-display); color:var(--text-primary);">Step 1: What did the adjuster say?</h2>
+                <p style="color:var(--text-secondary); margin-bottom:25px;">Select all the phrases you've heard from the insurance company:</p>
+
+                <div class="phrase-grid">
+                    <div>
+                        <input type="checkbox" id="p1" class="phrase-checkbox" value="recorded">
+                        <label for="p1" class="phrase-label">"We just need a quick recorded statement."</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="p2" class="phrase-checkbox" value="quick">
+                        <label for="p2" class="phrase-label">"We can write you a check today to settle this."</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="p3" class="phrase-checkbox" value="auth">
+                        <label for="p3" class="phrase-label">"Sign this medical authorization so we can pay your bills."</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="p4" class="phrase-checkbox" value="lawyer">
+                        <label for="p4" class="phrase-label">"If you hire a lawyer, they'll just take a third of your money."</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="p5" class="phrase-checkbox" value="soft">
+                        <label for="p5" class="phrase-label">"Your injuries are just soft tissue, it's minor."</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="p6" class="phrase-checkbox" value="preexist">
+                        <label for="p6" class="phrase-label">"Our doctor says this is from a pre-existing condition."</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="p7" class="phrase-checkbox" value="fault">
+                        <label for="p7" class="phrase-label">"We believe you share some of the fault for the accident."</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="p8" class="phrase-checkbox" value="app">
+                        <label for="p8" class="phrase-label">"Just use our app to upload photos of the damage."</label>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="analyzeTactics()" style="width:100%; justify-content:center; padding: 20px; font-size:1.1rem;">
+                    🔍 Analyze Tactics & Generate Script
+                </button>
+
+                <!-- RESULT SECTION -->
+                <div id="resultSection" class="analysis-result">
+                    <h2 style="font-family:var(--font-display); border-top: 1px solid var(--border); padding-top:40px;">Analysis Complete</h2>
+                    
+                    <p style="font-weight:bold; margin-top:20px;">Bad Faith Risk / Danger Level:</p>
+                    <div class="threat-meter">
+                        <div id="threatFill" class="threat-fill"></div>
+                    </div>
+                    <p id="threatText" style="color:var(--text-secondary); text-align:right; font-size:0.9rem;"></p>
+
+                    <div id="tacticsDetected" style="margin-top: 30px;">
+                        <!-- Tactics injected via JS -->
+                    </div>
+
+                    <h3 style="margin-top: 40px; color:var(--accent);">Your Response Script (Copy & Paste via Email)</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem;">Do not talk on the phone. Send this exact response via email to create a paper trail.</p>
+                    
+                    <div class="script-box">
+                        <button class="copy-btn" onclick="copyScript()">Copy Script</button>
+                        <div id="responseScript" style="white-space: pre-line;"></div>
+                    </div>
+
+                    <div class="legal-box warning" style="margin-top: 40px;">
+                        <div class="legal-box-icon">🚨</div>
+                        <div class="legal-box-content">
+                            <h4>Red Flags Detected</h4>
+                            <p>Based on their tactics, you are at high risk of having your claim undervalued. We strongly recommend having an attorney review your case before responding further.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AD SPACE -->
+            <div class="ad-space" style="margin-top: 50px;">
+                📢 Ad Space (AdSense Auto-Ads will place banners here)
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="/" class="logo">
+                    <span class="logo-mark">A</span>
+                    <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+                </a>
+                <p>The premier digital publication for personal injury law and insurance claims intelligence.</p>
+            </div>
+            <div>
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="/?category=Car+Accidents#articles">Car Accidents</a></li>
+                    <li><a href="/?category=Insurance+Claims#articles">Insurance Claims</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about.html">About Us</a></li>
+                    <li><a href="/contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/disclaimer.html">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Atlantis Privée. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const tacticDatabase = {
+            'recorded': {
+                name: "The 'Permanent Record' Trap",
+                desc: "They want to lock you into a statement before you know the full extent of your injuries. They will use innocent misstatements against you later."
+            },
+            'quick': {
+                name: "The 'Lowball & Close' Strategy",
+                desc: "They know you need money now. If you accept a check today, you sign a release giving up your right to any future medical expenses."
+            },
+            'auth': {
+                name: "The 'Fishing Expedition'",
+                desc: "A blanket medical authorization allows them to dig through your entire medical history to blame your current pain on a past injury."
+            },
+            'lawyer': {
+                name: "Legal Intimidation",
+                desc: "They discourage lawyers because data shows represented victims get 3.5x higher settlements, even after attorney fees."
+            },
+            'soft': {
+                name: "Injury Minimization",
+                desc: "Classifying injuries as 'soft tissue' is an industry playbook tactic to algorithmically cap your settlement in software like Colossus."
+            },
+            'preexist': {
+                name: "The Pre-Existing Deflection",
+                desc: "Using the 'eggshell plaintiff' rule against you. Legally, they must compensate you if the accident worsened a pre-existing condition, but they hope you don't know this."
+            },
+            'fault': {
+                name: "Comparative Negligence Shift",
+                desc: "Trying to shift even 10-20% of the blame to you automatically saves them thousands of dollars on the final payout."
+            },
+            'app': {
+                name: "Algorithmic Undervaluing",
+                desc: "Their photo apps use AI to estimate damage, historically undervaluing property damage by 30-50% compared to a real mechanic's inspection."
+            }
+        };
+
+        function analyzeTactics() {
+            const checkboxes = document.querySelectorAll('.phrase-checkbox:checked');
+            if(checkboxes.length === 0) {
+                alert("Please select at least one phrase.");
+                return;
+            }
+
+            // Show result section
+            const resultSection = document.getElementById('resultSection');
+            resultSection.style.display = 'block';
+            
+            // Scroll to results
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Calculate threat level
+            const threatLevel = Math.min((checkboxes.length / 5) * 100, 100);
+            
+            setTimeout(() => {
+                document.getElementById('threatFill').style.width = threatLevel + '%';
+            }, 100);
+
+            let threatMsg = "Low Risk - Standard procedure";
+            if(threatLevel > 40) threatMsg = "Medium Risk - They are actively trying to minimize your claim.";
+            if(threatLevel > 70) threatMsg = "High Risk - Hostile tactics detected. Professional help strongly advised.";
+            document.getElementById('threatText').innerText = threatMsg;
+
+            // Generate Tactics HTML
+            let tacticsHtml = '<h3 style="color:var(--text-primary); margin-bottom:15px;">Hidden Tactics Uncovered:</h3>';
+            let scriptBullets = [];
+
+            checkboxes.forEach(box => {
+                const tactic = tacticDatabase[box.value];
+                tacticsHtml += `
+                    <div class="legal-box gold" style="padding: 15px; margin: 10px 0;">
+                        <div class="legal-box-content">
+                            <h4 style="margin-bottom:5px;">⚠️ ${tactic.name}</h4>
+                            <p style="font-size:0.9rem;">${tactic.desc}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Build script logic based on selections
+                if(box.value === 'recorded') scriptBullets.push("- I am declining to provide a recorded statement at this time. I will communicate via written correspondence only.");
+                if(box.value === 'quick') scriptBullets.push("- I am still undergoing medical evaluation. I will not discuss settlement until I have reached Maximum Medical Improvement (MMI).");
+                if(box.value === 'auth') scriptBullets.push("- I am revoking any verbal consent for medical records. I will provide medical records specifically related to this accident directly to you.");
+                if(box.value === 'lawyer') scriptBullets.push("- I am currently in the process of consulting with legal counsel regarding this claim.");
+                if(box.value === 'fault' || box.value === 'preexist') scriptBullets.push("- I formally dispute your assessment of fault/medical history and expect a full written explanation of your determination citing specific evidence.");
+            });
+
+            document.getElementById('tacticsDetected').innerHTML = tacticsHtml;
+
+            // Generate Script
+            const today = new Date().toLocaleDateString('en-US');
+            let finalScript = `Dear [Adjuster Name],\n\nRegarding Claim #[Insert Claim Number]:\n\nI am writing to formally establish my position regarding the handling of my claim.\n\nMoving forward, please note the following:\n\n`;
+            
+            finalScript += scriptBullets.join('\n\n');
+            
+            finalScript += `\n\nPlease conduct all future communication regarding this claim in writing via this email address. Do not contact me by phone.\n\nI expect this claim to be handled in good faith as required by state law.\n\nSincerely,\n\n[Your Name]\n[Date: ${today}]`;
+
+            document.getElementById('responseScript').innerText = finalScript;
+        }
+
+        function copyScript() {
+            const scriptText = document.getElementById('responseScript').innerText;
+            navigator.clipboard.writeText(scriptText).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerText = "Copied! ✓";
+                setTimeout(() => btn.innerText = "Copy Script", 2000);
+            });
+        }
+    </script>
+</body>
+</html>
