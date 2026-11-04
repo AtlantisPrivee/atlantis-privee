@@ -3,3 +3,5 @@ Allow: /
 Disallow: /admin/
 
 Sitemap: https://atlantisprivee.com/sitemap.xml
+
+Sitemap: https://atlantisprivee.com/sitemap-tools.xml
