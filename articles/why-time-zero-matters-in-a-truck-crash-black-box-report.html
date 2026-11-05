@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Truck Crash Black Box Data and the Time Zero Problem — Atlantis Privée</title>
+    <meta name="description" content="Read the NTSB's 2026 Swanton report to see why truck brake and speed data need a time anchor, and how to compare two event recorders after a collision.">
+    <meta name="author" content="Atlantis Editorial">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://atlantisprivee.com/articles/why-time-zero-matters-in-a-truck-crash-black-box-report">
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#d4af37">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Atlantis Privée">
+    <meta property="og:title" content="Truck Crash Black Box Data and the Time Zero Problem">
+    <meta property="og:description" content="Read the NTSB's 2026 Swanton report to see why truck brake and speed data need a time anchor, and how to compare two event recorders after a collision.">
+    <meta property="og:url" content="https://atlantisprivee.com/articles/why-time-zero-matters-in-a-truck-crash-black-box-report">
+    <meta property="og:image" content="https://atlantisprivee.com/uploads/case-file-09-truck-black-box.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:author" content="Atlantis Editorial">
+    <meta property="article:published_time" content="2026-11-05T13:13:53.075Z">
+    <meta property="article:section" content="Truck Accidents">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Truck Crash Black Box Data and the Time Zero Problem">
+    <meta name="twitter:description" content="Read the NTSB's 2026 Swanton report to see why truck brake and speed data need a time anchor, and how to compare two event recorders after a collision.">
+    <meta name="twitter:image" content="https://atlantisprivee.com/uploads/case-file-09-truck-black-box.webp">
+
+    <link rel="stylesheet" href="/style.css">
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why Time Zero Matters in a Truck Crash Black Box Report",
+  "description": "Read the NTSB's 2026 Swanton report to see why truck brake and speed data need a time anchor, and how to compare two event recorders after a collision.",
+  "image": "https://atlantisprivee.com/uploads/case-file-09-truck-black-box.webp",
+  "datePublished": "2026-11-05T13:13:53.075Z",
+  "dateModified": "2026-11-05T13:13:53.075Z",
+  "author": {
+    "@type": "Organization",
+    "name": "Atlantis Editorial",
+    "url": "https://atlantisprivee.com/about.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Atlantis Privée",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://atlantisprivee.com/apple-touch-icon.png",
+      "width": 180,
+      "height": 180
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://atlantisprivee.com/articles/why-time-zero-matters-in-a-truck-crash-black-box-report"
+  },
+  "articleSection": "Truck Accidents",
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+    </script>
+    
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6043005595391779" crossorigin="anonymous"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WZ6E1P3SKB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-WZ6E1P3SKB');
+    </script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-mark">A</span>
+                <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+            </a>
+            <nav class="nav" id="mainNav">
+                <a href="/">Home</a>
+                <a href="/#articles">Articles</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/tools/">Tools</a>
+            </nav>
+            <div class="header-actions">
+                <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="article-hero">
+        <img src="/uploads/case-file-09-truck-black-box.webp" alt="Why Time Zero Matters in a Truck Crash Black Box Report">
+        <div class="article-hero-overlay">
+            <div class="article-hero-content">
+                <span class="category-tag">Truck Accidents</span>
+                <h1>Why Time Zero Matters in a Truck Crash Black Box Report</h1>
+                <div class="article-hero-meta">
+                    <span>✍️ Atlantis Editorial</span>
+                    <span>📅 November 5, 2026</span>
+                    <span>⏱ 4 min read</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="article-body-wrap">
+        <article class="article-body">
+            <p>In a truck crash report, the row labeled zero can look like the moment the truck struck the other vehicle. In a crash at an Ohio Turnpike toll plaza, investigators found a different reference point. Zero in the truck&#39;s data marked an impact with the toll plaza barrier or its crash cushion, <strong>after</strong> the truck had hit the SUV.</p>
+<p>That detail in the National Transportation Safety Board&#39;s report on the Swanton crash changes how to read every brake and speed entry around it. When two vehicles record one crash sequence, their data tables can use different anchors. Find the anchor before treating two rows as observations of the same instant. <a href="https://www.ntsb.gov/investigations/AccidentReports/Reports/HIR2608.pdf">NTSB Highway Investigation Report HIR-26-08, pp. 19–22</a></p>
+<h2>One crash sequence, two data sources</h2>
+<p>On August 15, 2024, a Toyota Highlander slowed and moved toward the right across the path of a tractor-trailer near the Swanton Township Toll Plaza. The truck struck the SUV and then hit the barrier area separating the high- and low-speed toll lanes. The collision killed two people and seriously injured others.</p>
+<p>The NTSB&#39;s August 2026 report says the SUV data showed 43.5 mph at a sample 4.75 seconds before the crash and about 14.9 mph at the crash. It describes a recorded truck speed of 69.6 mph just before the crash. The truck&#39;s control modules provided speed and brake switch readings referenced to the later barrier event. Investigators obtained the SUV data from its airbag control module. <a href="https://www.ntsb.gov/investigations/AccidentReports/Reports/HIR2608.pdf">NTSB report, pp. 1–3 and 19–22</a></p>
+<p>This is a substantial closing-speed problem, but the numbers in the two tables need to be aligned before they can answer a question about the exact speed difference at a particular moment. Comparing the figures simply because both are near the top of an executive summary can erase the timing that matters most.</p>
+<h2>The 0.75-second question</h2>
+<p>The truck&#39;s brake switch first appears on in the table at 0.75 seconds before the end of its recorded data. If a reader labels that as 0.75 seconds before the truck hit the SUV, the reader has silently moved the time origin. The report ties the truck&#39;s zero to the later barrier impact. The 0.75 seconds describes a sample relative to that later point.</p>
+<p>The table also reports a switch state at discrete moments. Treat it as one measured signal. To work out a driver&#39;s response in relation to the SUV entering the lane, an investigator has to combine that information with the positions and movement of the vehicles, sight lines, physical evidence, and the reconstruction&#39;s assumptions. The NTSB drew on multiple sources in analyzing the lane change and the short time available for the truck driver to respond. <a href="https://www.ntsb.gov/investigations/AccidentReports/Reports/HIR2608.pdf">NTSB report, Table 5 and Section 2.2.1</a></p>
+<h2>Build a timeline that preserves the original clocks</h2>
+<ol>
+<li><strong>Name the source and the event.</strong> Record which vehicle and module produced the file. Note the crash, sudden deceleration, or other trigger that the report says anchored the data.</li>
+<li><strong>Keep the original time column.</strong> Copy the relative seconds as reported. Add a separate field for a proposed common timeline, with a note explaining how you aligned it.</li>
+<li><strong>Separate recorded signals from reconstruction.</strong> A speed sample or brake switch state is different from an estimate of when a lane change became perceptible to a driver. Label each entry with the source for that inference.</li>
+<li><strong>Keep corroborating records.</strong> Scene measurements, photos, camera footage where available, and diagrams can connect events across sources. Preserve the records supporting the timing rather than relying on a chart stripped of its notes.</li>
+</ol>
+<p>Commercial truck modules vary in what they record and how they trigger. The NTSB describes its use of several control modules in this investigation. The amount of information available in another crash can differ by vehicle, equipment, and event. <a href="https://www.ntsb.gov/investigations/AccidentReports/Reports/HIR2608.pdf">NTSB report, Section 1.5</a></p>
+<h2>What a public investigation contributes</h2>
+<p>The NTSB focused on safety causes and recommendations. It identified the SUV&#39;s deceleration and lane change in the truck&#39;s path as the probable cause and discussed toll-plaza signs and the speed difference among the contributing factors. Federal law limits use of the Board&#39;s accident report in a civil damages action. Evidence in a particular dispute requires its own review of the underlying records and applicable rules. <a href="https://www.ntsb.gov/investigations/Pages/HWY24MH013.aspx">NTSB investigation and findings</a> · <a href="https://uscode.house.gov/us/usc/119-120/t49/s1154/">49 U.S.C. § 1154(b)</a></p>
+<p>Start with a dated <a href="/tools/claim-timeline-builder">Claim Timeline</a>. Keep the two vehicle timelines separate until you can identify the evidence that links their time origins.</p>
+<h2>Read the record</h2>
+<ul>
+<li><a href="https://www.ntsb.gov/investigations/Pages/HWY24MH013.aspx">NTSB, Swanton Township Toll Plaza investigation HWY24MH013</a></li>
+<li><a href="https://www.ntsb.gov/investigations/AccidentReports/Reports/HIR2608.pdf">NTSB final investigation report HIR-26-08, August 31, 2026</a></li>
+<li><a href="https://uscode.house.gov/us/usc/119-120/t49/s1154/">49 U.S.C. § 1154, discovery and use of accident records and Board reports</a></li>
+</ul>
+
+            <div class="article-cta-contact">
+                <div class="article-cta-content">
+                    <div class="article-cta-icon">💬</div>
+                    <div class="article-cta-text">
+                        <h3>Have Questions About This Topic?</h3>
+                        <p>Our editorial team is here to help. Reach out with any questions or feedback about this article.</p>
+                    </div>
+                    <a href="/contact.html" class="article-cta-button">Contact Us →</a>
+                </div>
+            </div>
+        </article>
+
+        <aside class="sidebar">
+            <div class="sidebar-widget">
+                <h4>Related Reading</h4>
+                <div id="relatedArticles"><p style="color: var(--text-muted); font-size:0.85rem;">Loading...</p></div>
+            </div>
+
+            <div class="ad-space">
+                📢 Ad Space<br>
+                <small style="font-size:0.75rem; opacity:0.5; margin-top:8px; display:block;">AdSense or affiliate banner</small>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="/" class="logo">
+                    <span class="logo-mark">A</span>
+                    <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+                </a>
+                <p>The premier digital publication for personal injury law and insurance claims intelligence.</p>
+            </div>
+            <div>
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="/">Car Accidents</a></li>
+                    <li><a href="/">Insurance Claims</a></li>
+                    <li><a href="/">Personal Injury</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about.html">About Us</a></li>
+                    <li><a href="/contact.html">Contact Us</a></li>
+                    <li><a href="mailto:contact@atlantisprivee.com">📧 contact@atlantisprivee.com</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Atlantis Privée. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-banner-inner">
+            <div class="cookie-banner-text">
+                <h4>🍪 We Value Your Privacy</h4>
+                <p>We use cookies to enhance your browsing experience. <a href="/cookie-policy.html">Learn more</a></p>
+            </div>
+            <div class="cookie-banner-buttons">
+                <button class="btn-cookie-reject" onclick="rejectCookies()">Reject</button>
+                <button class="btn-cookie-accept" onclick="acceptCookies()">Accept All</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadRelated() {
+            try {
+                const res = await fetch('/data/articles.json?t=' + Date.now());
+                const articles = await res.json();
+                const related = articles.filter(a =>
+                    a.category === 'Truck Accidents' &&
+                    a.slug !== 'why-time-zero-matters-in-a-truck-crash-black-box-report' &&
+                    a.status === 'published'
+                ).slice(0, 4);
+
+                const c = document.getElementById('relatedArticles');
+                if (related.length === 0) {
+                    c.innerHTML = '<p style="color: var(--text-muted); font-size:0.85rem;">No related articles yet.</p>';
+                    return;
+                }
+                c.innerHTML = related.map(a => `
+                    <a href="/articles/${a.slug}.html" class="sidebar-article" style="cursor:pointer;">
+                        <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='var(--bg-elevated)'; this.src='';">
+                        <div>
+                            <h5>${a.title}</h5>
+                            <small>${new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</small>
+                        </div>
+                    </a>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function toggleNav() { document.getElementById('mainNav').classList.toggle('open'); }
+
+        function showCookieBanner() {
+            if (!localStorage.getItem('cookie_consent')) {
+                setTimeout(() => document.getElementById('cookieBanner').classList.add('show'), 1000);
+            }
+        }
+        function acceptCookies() {
+            localStorage.setItem('cookie_consent', 'accepted');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+        function rejectCookies() {
+            localStorage.setItem('cookie_consent', 'rejected');
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        loadRelated();
+        showCookieBanner();
+    </script>
+</body>
+</html>
