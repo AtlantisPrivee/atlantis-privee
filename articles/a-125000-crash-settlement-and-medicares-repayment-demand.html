@@ -45,7 +45,7 @@
   "description": "Follow Hadden's $125,000 crash settlement from conditional Medicare payments to a recovery demand, including a worked example of the fee reduction.",
   "image": "https://atlantisprivee.com/uploads/case-file-05-medicare-repayment.webp",
   "datePublished": "2026-11-05T13:13:53.075Z",
-  "dateModified": "2026-11-05T13:13:53.075Z",
+  "dateModified": "2026-11-05T17:30:50.183Z",
   "author": {
     "@type": "Organization",
     "name": "Atlantis Editorial",
@@ -111,7 +111,7 @@
                 <div class="article-hero-meta">
                     <span>✍️ Atlantis Editorial</span>
                     <span>📅 November 5, 2026</span>
-                    <span>⏱ 4 min read</span>
+                    <span>⏱ 5 min read</span>
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
 
     <div class="article-body-wrap">
         <article class="article-body">
-            <p>Vernon Hadden settled an injury claim for $125,000. Then he had to account for a different number. Medicare had paid $82,036.17 for his care and sought $62,338.07 back after reducing its recovery for a share of his attorney fees. The gap between those amounts is a window into what happens between Medicare&#39;s payment of a medical claim and its final recovery demand.</p>
+            <p>Vernon Hadden settled an injury claim for $125,000. Then he had to account for a different number. Medicare had paid $82,036.17 for his care and sought $62,338.07 back after reducing its recovery for a share of his attorney fees. The gap between those amounts is a window into what happens between Medicare&#39;s payment of a medical claim and its final recovery demand. <a href="https://www.ca6.uscourts.gov/opinions.pdf/11a0293p-06.pdf">Sixth Circuit opinion in Hadden</a></p>
 <p>In <em>Hadden v. United States</em>, a divided Sixth Circuit upheld that demand in a dispute over a Kentucky accident. A second driver had caused the truck that struck Hadden to swerve and was never identified. Hadden argued that the truck&#39;s owner accounted for only a small share of the fault, and that the share should reduce Medicare&#39;s reimbursement. The majority treated the scope of the claim resolved by the settlement, which included his medical expenses, as decisive in this case. <a href="https://www.ca6.uscourts.gov/opinions.pdf/11a0293p-06.pdf">Sixth Circuit opinion, pp. 2–8</a></p>
 <h2>Why the number moves</h2>
 <p>Under the Medicare Secondary Payer framework, Medicare may make a conditional payment for care when a primary payer, such as a liability insurer, is expected to pay but cannot be expected to pay promptly. A later settlement, judgment, or other payment can trigger Medicare&#39;s right to recover eligible conditional payments. The payment history and the recovery demand are distinct records. <a href="https://www.cms.gov/medicare/coordination-benefits-recovery/beneficiary-services/recovery-process">CMS, Medicare&#39;s recovery process</a></p>
@@ -134,6 +134,9 @@
 <h2>Check one disputed charge from beginning to end</h2>
 <p>Pick the largest line you cannot explain. Record the service date, provider, item identifier if available, and amount Medicare paid. Match those fields to the medical record or billing statement that shows what the service was for. Compare the record with the incident date and the treatment the settlement claim addressed. A same-day provider visit may include multiple services, so a match on provider and date alone can leave an open question.</p>
 <p>Keep the gross settlement, acquisition costs, related conditional payments, disputed charges, and final demand in distinct fields. The <a href="/tools/settlement-net-waterfall">Settlement Net Waterfall</a> can help model those entries. For a private employer health plan&#39;s reimbursement claim, the plan documents and rules present a different inquiry from the Medicare recovery process.</p>
+<h2>Give every recovery figure a document and a date</h2>
+<p>If a file contains a conditional payment amount, a correction request, and a final demand, create a line for each. Include the issue date, what charges it covers, and whether you have a written update. CMS describes how conditional payments are reviewed and how a demand follows settlement reporting. The regulation addresses the calculation of Medicare recovery when procurement costs apply. <a href="https://www.cms.gov/medicare/coordination-benefits-recovery/beneficiary-services/recovery-process">CMS beneficiary recovery process</a> · <a href="https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-411/subpart-B/section-411.37">42 C.F.R. § 411.37</a></p>
+<p>The <a href="/tools/settlement-net-waterfall">Net Settlement Calculator</a> can compare the arithmetic under two written repayment figures while a line remains unresolved. The <a href="/articles/can-an-employer-health-plan-claim-your-injury-settlement">employer health plan case</a> explains why a plan&#39;s recovery request may follow a different legal framework. Use the <a href="/articles/settlement-vs-trial-which-path-to-choose-for-your-personal-injury-case-in-2026">settlement versus trial guide</a> to compare a release and the confirmed deductions together.</p>
 <h2>Read the record</h2>
 <ul>
 <li><a href="https://www.ca6.uscourts.gov/opinions.pdf/11a0293p-06.pdf">U.S. Court of Appeals for the Sixth Circuit, <em>Hadden v. United States</em>, No. 09-6072, November 21, 2011</a></li>
@@ -236,7 +239,7 @@
                     return;
                 }
                 c.innerHTML = related.map(a => `
-                    <a href="/articles/${a.slug}.html" class="sidebar-article" style="cursor:pointer;">
+                    <a href="/articles/${a.slug}" class="sidebar-article" style="cursor:pointer;">
                         <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='var(--bg-elevated)'; this.src='';">
                         <div>
                             <h5>${a.title}</h5>
