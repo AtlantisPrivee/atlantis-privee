@@ -435,8 +435,8 @@ ${JSON.stringify(schema, null, 2)}
             <nav class="nav" id="mainNav">
                 <a href="/">Home</a>
                 <a href="/#articles">Articles</a>
-                <a href="/about.html">About</a>
-                <a href="/contact.html">Contact</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
                 <a href="/tools/">Tools</a>
             </nav>
             <div class="header-actions">
@@ -470,7 +470,7 @@ ${JSON.stringify(schema, null, 2)}
                         <h3>Have Questions About This Topic?</h3>
                         <p>Our editorial team is here to help. Reach out with any questions or feedback about this article.</p>
                     </div>
-                    <a href="/contact.html" class="article-cta-button">Contact Us →</a>
+                    <a href="/contact" class="article-cta-button">Contact Us →</a>
                 </div>
             </div>
         </article>
@@ -508,18 +508,18 @@ ${JSON.stringify(schema, null, 2)}
             <div>
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="/about.html">About Us</a></li>
-                    <li><a href="/contact.html">Contact Us</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
                     <li><a href="mailto:contact@atlantisprivee.com">📧 contact@atlantisprivee.com</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
-                    <li><a href="/disclaimer.html">Disclaimer</a></li>
-                    <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service">Terms of Service</a></li>
+                    <li><a href="/disclaimer">Disclaimer</a></li>
+                    <li><a href="/cookie-policy">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -532,7 +532,7 @@ ${JSON.stringify(schema, null, 2)}
         <div class="cookie-banner-inner">
             <div class="cookie-banner-text">
                 <h4>🍪 We Value Your Privacy</h4>
-                <p>We use cookies to enhance your browsing experience. <a href="/cookie-policy.html">Learn more</a></p>
+                <p>We use cookies to enhance your browsing experience. <a href="/cookie-policy">Learn more</a></p>
             </div>
             <div class="cookie-banner-buttons">
                 <button class="btn-cookie-reject" onclick="rejectCookies()">Reject</button>
@@ -651,7 +651,7 @@ ${JSON.stringify(schema, null, 2)}
             }
         }
 
-        // ============ AUTO SITEMAP GENERATOR (URLs con .html) ============
+        // ============ AUTO SITEMAP GENERATOR ============
         async function updateSitemap(articles) {
             try {
                 const today = new Date().toISOString().split('T')[0];
@@ -692,18 +692,18 @@ ${JSON.stringify(schema, null, 2)}
                 // LEGAL PAGES
                 sitemap += '  <!-- LEGAL & COMPANY PAGES -->\n';
                 const legalPages = [
-                    { url: 'about.html', priority: '0.7' },
-                    { url: 'contact.html', priority: '0.6' },
-                    { url: 'privacy-policy.html', priority: '0.4' },
-                    { url: 'terms-of-service.html', priority: '0.4' },
-                    { url: 'disclaimer.html', priority: '0.4' },
-                    { url: 'cookie-policy.html', priority: '0.4' }
+                    { url: 'guides/', priority: '0.8' },
+                    { url: 'about', priority: '0.7' },
+                    { url: 'contact', priority: '0.6' },
+                    { url: 'privacy-policy', priority: '0.4' },
+                    { url: 'terms-of-service', priority: '0.4' },
+                    { url: 'disclaimer', priority: '0.4' },
+                    { url: 'cookie-policy', priority: '0.4' }
                 ];
 
                 legalPages.forEach(function(page) {
                     sitemap += '  <url>\n';
                     sitemap += '    <loc>https://atlantisprivee.com/' + page.url + '</loc>\n';
-                    sitemap += '    <lastmod>' + today + '</lastmod>\n';
                     sitemap += '    <changefreq>monthly</changefreq>\n';
                     sitemap += '    <priority>' + page.priority + '</priority>\n';
                     sitemap += '  </url>\n\n';

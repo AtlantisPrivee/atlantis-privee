@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Article Directory — Atlantis Privée</title>
+    <meta name="description" content="Browse Atlantis Privée's insurance, personal injury and settlement guides by topic.">
+    <link rel="canonical" href="https://atlantisprivee.com/guides/">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-mark">A</span>
+                <span class="logo-text">ATLANTIS<small>PRIVÉE</small></span>
+            </a>
+            <nav class="nav" id="mainNav" aria-label="Main navigation">
+                <a href="/">Home</a>
+                <a href="/#articles">Articles</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+                <a href="/tools/">Tools</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="mobile-toggle" id="menuToggle"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="Toggle menu">☰</button>
+            </div>
+        </div>
+    </header>
+    <main class="section">
+        <div class="section-header">
+            <div>
+                <div class="section-tag">Atlantis Privée</div>
+                <h1 class="section-title">Article <span class="italic">Directory</span></h1>
+            </div>
+        </div>
+        <div class="article-body">
+            <p>Browse guides on insurance claims, injury records and settlement payments by topic.</p>
+            <!-- ARTICLE_DIRECTORY -->
+        </div>
+        <p><a href="/#articles" class="read-more">Return to articles →</a></p>
+    </main>
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        menuToggle.addEventListener('click', () => {
+            const open = document.getElementById('mainNav').classList.toggle('open');
+            menuToggle.setAttribute('aria-expanded', String(open));
+        });
+    </script>
+</body>
+</html>
