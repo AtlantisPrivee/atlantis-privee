@@ -94,8 +94,8 @@
             <nav class="nav" id="mainNav">
                 <a href="/" class="active">Home</a>
                 <a href="#articles">Articles</a>
-                <a href="/about.html">About</a>
-                <a href="/contact.html">Contact</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
                 <a href="/tools/">Tools</a>
             </nav>
             <div class="header-actions">
@@ -146,6 +146,7 @@
                 <div class="section-tag">Featured</div>
                 <h2 class="section-title" id="sectionTitle">Editor's <span class="italic">Selection</span></h2>
             </div>
+            <a href="/guides/" class="read-more">Browse the article directory →</a>
         </div>
 
         <div class="featured-grid" id="featuredGrid">
@@ -183,18 +184,18 @@
             <div>
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="/about.html">About Us</a></li>
-                    <li><a href="/contact.html">Contact Us</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
                     <li><a href="mailto:contact@atlantisprivee.com">📧 contact@atlantisprivee.com</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                    <li><a href="/terms-of-service.html">Terms of Service</a></li>
-                    <li><a href="/disclaimer.html">Disclaimer</a></li>
-                    <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service">Terms of Service</a></li>
+                    <li><a href="/disclaimer">Disclaimer</a></li>
+                    <li><a href="/cookie-policy">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -209,7 +210,7 @@
         <div class="cookie-banner-inner">
             <div class="cookie-banner-text">
                 <h4>🍪 We Value Your Privacy</h4>
-                <p>We use cookies to enhance your browsing experience, serve personalized ads, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies. <a href="/cookie-policy.html">Learn more</a></p>
+                <p>We use cookies to enhance your browsing experience, serve personalized ads, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies. <a href="/cookie-policy">Learn more</a></p>
             </div>
             <div class="cookie-banner-buttons">
                 <button class="btn-cookie-reject" onclick="rejectCookies()">Reject</button>
@@ -292,7 +293,7 @@
             const sides = articles.slice(1, 3);
 
             grid.innerHTML = `
-                <a href="/articles/${main.slug}.html" class="featured-main" style="text-decoration:none;color:inherit;">
+                <a href="/articles/${main.slug}" class="featured-main" style="text-decoration:none;color:inherit;">
                     <img src="${main.image || ''}" alt="${main.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                     <div class="featured-overlay">
                         <span class="category-tag">${main.category}</span>
@@ -306,7 +307,7 @@
                 </a>
                 <div class="featured-side">
                     ${sides.map(a => `
-                        <a href="/articles/${a.slug}.html" class="featured-side-card" style="text-decoration:none;color:inherit;">
+                        <a href="/articles/${a.slug}" class="featured-side-card" style="text-decoration:none;color:inherit;">
                             <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                             <div class="overlay">
                                 <span class="category-tag">${a.category}</span>
@@ -349,7 +350,7 @@
                 return;
             }
             grid.innerHTML = articles.map(a => `
-                <a href="/articles/${a.slug}.html" class="article-card" style="text-decoration:none;color:inherit;">
+                <a href="/articles/${a.slug}" class="article-card" style="text-decoration:none;color:inherit;">
                     <div class="article-card-image">
                         <img src="${a.image || ''}" alt="${a.title}" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #333)'; this.src='';">
                         <span class="category-tag">${a.category}</span>
